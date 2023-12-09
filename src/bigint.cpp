@@ -6,10 +6,18 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+enum class negativity : uint8_t {
+    pp = 0,
+    pn = 1,
+    np = 2,
+    nn = 3
+};
+
+const auto find_negativity = [] (bool v1, bool v2) { return static_cast<negativity>(v1 >> 1 | v2); };
 
 const auto add = [] (const std::string& s1, const std::string& s2) {
     std::stringstream ss{""};
-    int remainder{0};
+    uint8_t remainder{0};
 
     const auto add_digits = [&ss, &remainder] (int n1, int n2=0) {
         const auto sum{n1 + n2 + remainder};
@@ -58,9 +66,11 @@ const auto is_less_than = [] (const std::string& s1, const std::string& s2) {
         if (*itr1 != *itr2) {
             return *itr1 < *itr2;
         }
+        itr1++;
+        itr2++;
     }
-    const auto remaining1{itr1_end - itr1};
-    const auto remaining2{itr2_end - itr2};
+    const auto& remaining1{itr1_end - itr1};
+    const auto& remaining2{itr2_end - itr2};
     return remaining1 < remaining2;
 };
 
@@ -87,10 +97,10 @@ const bool& BigInt::get_negative() const { return this->is_negative; }
 void BigInt::set_value(std::string&& val) {
     this->value = std::move(val);
     if (this->value == "0") {
-        this->set_negative(false);
+            this->set_negative(false);
     }
 }
-void BigInt::set_negative(bool&& val) { this->is_negative = std::move(val); }
+void BigInt::set_negative(const bool val) { this->is_negative = val; }
 
 std::string BigInt::get() const {
     if (this->get_negative()) {
@@ -103,11 +113,11 @@ BigInt BigInt::operator+ () const { BigInt value{*this}; return value; }
 BigInt BigInt::operator- () const { BigInt value{*this}; value.set_negative(std::move(!this->get_negative())); return value; }
 
 BigInt& BigInt::operator+= (const BigInt& other) {
-    if (this->get_negative()) {
-        if (other.get_negative()) {
+    switch (find_negativity(this->get_negative(), other.get_negative())) {
+        case negativity::nn:
             this->set_value(add(this->value, other.value));
-        }
-        else {
+            break;
+        case negativity::np:
             if (*this > other) {
                 this->set_value(sub(this->value, other.value));
             }
@@ -115,10 +125,8 @@ BigInt& BigInt::operator+= (const BigInt& other) {
                 this->set_negative(std::move(false));
                 this->set_value(sub(other.value, this->value));
             }
-        }
-    }
-    else {
-        if (other.get_negative()) {
+            break;
+        case negativity::pn:
             if (*this > other) {
                 this->set_value(sub(this->value, other.value));
             }
@@ -126,10 +134,12 @@ BigInt& BigInt::operator+= (const BigInt& other) {
                 this->set_negative(std::move(true));
                 this->set_value(sub(other.value, this->value));
             }
-        }
-        else {
+            break;
+        case negativity::pp:
             this->set_value(add(this->value, other.value));
-        }
+            break;
+        default:
+            throw std::invalid_argument("");
     }
 
     return *this;
@@ -155,21 +165,17 @@ BigInt& BigInt::operator<< (const BigInt& other) { *this /= 2; return *this; };
 BigInt& BigInt::operator>> (const BigInt& other) { *this *= 2; return *this; };
 
 bool BigInt::operator< (const BigInt& other) const {
-    if (this->get_negative()) {
-        if (other.get_negative()) {
-            return is_less_than(this->get_value(), other.get_value());
-        }
-        else {
-            return true;
-        }
-    }
-    else {
-        if (other.get_negative()) {
-            return false;
-        }
-        else {
+    switch (find_negativity(this->get_negative(), other.get_negative())) {
+        case negativity::nn:
             return is_less_than(other.get_value(), this->get_value());
-        }
+        case negativity::np:
+            return true;
+        case negativity::pn:
+            return false;
+        case negativity::pp:
+            return is_less_than(this->get_value(), other.get_value());
+        default:
+            throw std::invalid_argument("");
     }
 };
 bool BigInt::operator> (const BigInt& other) const { return *this < other; };
@@ -177,3 +183,13 @@ bool BigInt::operator<= (const BigInt& other) const { return !(other > *this);};
 bool BigInt::operator>= (const BigInt& other) const { return !(other < *this);};
 bool BigInt::operator== (const BigInt& other) const { return this->value == other.value; };
 bool BigInt::operator!= (const BigInt& other) const { return !(*this == other); };
+
+std::ostream& operator<< (std::ostream& os, const BigInt& i) {
+    return os << i.get();
+}
+std::istream& operator>> (std::istream& is, BigInt& i) {
+    std::string value;
+    is >> value;
+    i.set_value(std::move(value));
+    return is;
+}

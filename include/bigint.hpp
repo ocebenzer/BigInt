@@ -8,13 +8,14 @@ private:
     std::string value;
 
 public:
-    BigInt(const std::string& = "0");
+    BigInt(const std::string& = "");
+    BigInt(std::string&&);
     BigInt(const long long);
 
     const std::string& get_value() const;
     const bool& get_negative() const;
     void set_value(std::string&&);
-    void set_negative(bool&&);
+    void set_negative(const bool);
 
     std::string get() const;
 
@@ -43,3 +44,6 @@ public:
     bool operator== (const BigInt&) const;
     bool operator!= (const BigInt&) const;
 };
+
+std::ostream& operator<< (std::ostream&, const BigInt&);
+std::istream& operator>> (std::istream&, BigInt&);

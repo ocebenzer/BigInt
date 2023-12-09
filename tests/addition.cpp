@@ -11,3 +11,30 @@ TEST_CASE("Increment") {
     CHECK_EQ(i.get_value(), "1");
     CHECK_EQ(i.get_negative(), false);
 }
+
+TEST_CASE("Simple Addition") {
+    BigInt i{36};
+    i += 14;
+
+    CHECK_EQ(i.get_value(), "50");
+    CHECK_EQ(i.get_negative(), false);
+
+    auto res{i + 1000};
+
+    CHECK_EQ(res.get_value(), "1050");
+    CHECK_EQ(res.get_negative(), false);
+
+    i = 100;
+
+    auto pre_inc{i++};
+    CHECK_EQ(pre_inc.get_value(), "100");
+    CHECK_EQ(pre_inc.get_negative(), false);
+    CHECK_EQ(i.get_value(), "101");
+    CHECK_EQ(i.get_negative(), false);
+
+    auto post_inc{++i};
+    CHECK_EQ(post_inc.get_value(), "102");
+    CHECK_EQ(post_inc.get_negative(), false);
+    CHECK_EQ(i.get_value(), "102");
+    CHECK_EQ(i.get_negative(), false);
+}
