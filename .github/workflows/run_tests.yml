@@ -1,0 +1,30 @@
+name: BigInt - Run Tests
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run apt
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential cmake doctest-dev
+
+      - name: Setup Test Environment
+        run: |
+          mkdir build
+          pushd build
+          cmake ..
+          make
+          popd
+
+      - name: Run Tests
+        run: ./build/bigint_tests
