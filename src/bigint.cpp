@@ -6,6 +6,8 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <regex>
+
 enum class negativity : uint8_t {
     pp = 0,
     pn = 1,
@@ -54,7 +56,44 @@ const auto add = [] (const std::string& s1, const std::string& s2) {
 };
 
 const auto sub = [] (const std::string& s1, const std::string& s2) {
-    return "";
+    std::stringstream ss{""};
+    uint8_t remainder{0};
+
+    const auto sub_digits = [&ss, &remainder] (int n1, int n2=0) {
+        auto sum{n1 - n2 + remainder};
+        if (sum < 0) {
+            remainder = -1;
+            sum += 10;
+        }
+        ss << std::to_string(sum % 10);
+    };
+
+    for (auto itr1{s1.rbegin()}, itr2{s2.rbegin()}; itr1 != s1.rend() && itr2 != s2.rend(); itr1++, itr2++) {
+        sub_digits(*itr1 - '0', *itr2 - '0');
+    }
+
+    {
+        auto itr{s1.rbegin() + s2.size()};
+        auto itr_end{s1.rend()};
+
+        if (s2.size() > s1.size()) {
+            itr = s2.rbegin() + s1.size();
+            itr_end = s2.rend();
+        }
+
+        for (; itr != itr_end; itr++) {
+            sub_digits(*itr - '0');
+        }
+    }
+
+    if (remainder) {
+        ss << remainder;
+    }
+
+    auto result{ss.str()};
+
+    std::reverse(result.begin(), result.end());
+    return result;
 };
 
 const auto is_less_than = [] (const std::string& s1, const std::string& s2) {
@@ -74,30 +113,48 @@ const auto is_less_than = [] (const std::string& s1, const std::string& s2) {
     return remaining1 < remaining2;
 };
 
-BigInt::BigInt(const std::string& value) : is_negative{*value.begin() == '-'} {
-    const auto value_start{value.find_first_of("123456789")};
-    if (value_start == std::string::npos) {
-        this->set_value("0");
-    }
-    else {
-        this->set_value(value.substr(value_start));
-    }
+BigInt::BigInt(const std::string& value) { this->set_value(std::string{value}); };
 
-    for (const char c : this->value) {
-        if (c < '0' || c > '9') {
-            throw std::invalid_argument(std::to_string(c) + "(index " + std::to_string(this->value.find(c)) + ")");
-        }
-    }
-};
+BigInt::BigInt(std::string&& value) { this->set_value(std::move(value)); };
 
 BigInt::BigInt(const long long value) : BigInt(std::to_string(value)) {};
 
 const std::string& BigInt::get_value() const { return this->value; }
+
 const bool& BigInt::get_negative() const { return this->is_negative; }
-void BigInt::set_value(std::string&& val) {
-    this->value = std::move(val);
-    if (this->value == "0") {
+
+void BigInt::set_value(std::string&& new_value) {
+    const std::regex regex{"([+-])?0*(\\d*)([eE][+]?(\\d+))?"};
+    std::smatch matches;
+    if (!std::regex_match(new_value, matches, regex)) {
+            throw std::invalid_argument(new_value);
+    }
+    
+    this->set_negative(matches[1].matched && matches[1] == "-");
+
+    if (matches[2].str().empty()) {
+        this->value = "0";
+    }
+    else {
+        this->value = matches[2];
+    }
+
+    if (matches[3].matched) {
+        const auto n{static_cast<char>(std::stoi(matches[4].str()))};
+        this->value += std::string{n, '0'};
+    }
+
+    const auto first_not_zero{this->value.find_first_not_of('0')};
+    switch (first_not_zero) {
+        case 0:
+            break;
+        case std::string::npos:
             this->set_negative(false);
+            this->value = "0";
+            break;
+        default:
+            this->value = this->value.substr(first_not_zero);
+            break;
     }
 }
 void BigInt::set_negative(const bool val) { this->is_negative = val; }
