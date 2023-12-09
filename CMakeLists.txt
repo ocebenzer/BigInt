@@ -20,6 +20,7 @@ add_library(bigint src/bigint.cpp)
 add_executable(bigint_tests
     tests/constructor.cpp
     tests/addition.cpp
+    tests/subtraction.cpp
     tests/logical.cpp
     tests/main.cpp)
 
