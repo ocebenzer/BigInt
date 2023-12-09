@@ -1,9 +1,15 @@
 # BigInt
 
-BigInt is a library to do simple aritmethic operations for big numbers, possibly bigger than average integer variables.
-
+BigInt is a library to do simple arithmetic operations for big numbers, possibly way higher than computers support normally.
 
 ## Documentation
+
+### Features
+- Integers between [-10^512, 10^512]
+- Basic arithmetic operations (add, sub, mul, div, mod) as you would expect from any integer value
+- Logical operations (lt, leq, gt, geq, eq, neq)
+
+## Usage
 In order to use the project you need the following libraries:
 - **gcc** (note that c++20 or higher is required)
 - **cmake**

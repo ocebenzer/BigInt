@@ -17,7 +17,12 @@ include_directories(include)
 
 add_library(bigint src/bigint.cpp)
 
-add_executable(bigint_tests tests/constructor.cpp tests/addition.cpp tests/main.cpp)
+add_executable(bigint_tests
+    tests/constructor.cpp
+    tests/addition.cpp
+    tests/logical.cpp
+    tests/main.cpp)
+
 target_link_libraries(bigint_tests PRIVATE bigint)
 
 add_compile_options(-Wall -Wextra -Wconversion -pedantic -Wfatal-errors)
