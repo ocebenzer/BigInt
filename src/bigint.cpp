@@ -71,7 +71,7 @@ const auto sub = [] (const std::string& s1, const std::string& s2) {
     assert(s1.size() >= s2.size());
 
     std::stringstream ss{""};
-    uint8_t borrow{0};
+    bool borrow{0};
 
     const auto sub_digits = [&ss, &borrow] (int n1, int n2=0) {
         auto sub{n1 - n2 - borrow};
@@ -79,7 +79,7 @@ const auto sub = [] (const std::string& s1, const std::string& s2) {
         if (borrow) {
             sub += 10;
         }
-        ss << std::to_string(sub % 10);
+        ss << std::to_string(sub);
     };
 
     for (auto itr1{s1.rbegin()}, itr2{s2.rbegin()}; itr1 != s1.rend() && itr2 != s2.rend(); itr1++, itr2++) {
@@ -113,11 +113,11 @@ const auto is_less_than = [] (const std::string& s1, const std::string& s2) {
     return s1.size() < s2.size();
 };
 
-BigInt::BigInt(const std::string& value) { this->set_value(std::string{value}); };
+BigInt::BigInt(const std::string& number) { this->set(std::string{number}); };
 
-BigInt::BigInt(std::string&& value) { this->set_value(std::move(value)); };
+BigInt::BigInt(std::string&& number) { this->set(std::move(number)); };
 
-BigInt::BigInt(const long long value) : BigInt(std::to_string(value)) {};
+BigInt::BigInt(const long long number) : BigInt(std::to_string(number)) {};
 
 const std::string& BigInt::get_value() const { return this->value; }
 
@@ -169,34 +169,34 @@ bool BigInt::is_greater_than_int64_max() const {
     return *this > INT64_MAX;
 }
 
-BigInt BigInt::operator+ () const { BigInt value{*this}; return value; }
-BigInt BigInt::operator- () const { BigInt value{*this}; value.set_negative(std::move(!this->get_negative())); return value; }
+BigInt BigInt::operator+ () const { BigInt i{*this}; return i; }
+BigInt BigInt::operator- () const { BigInt i{*this}; i.set_negative(!this->get_negative()); return i; }
 
 BigInt& BigInt::operator+= (const BigInt& other) {
     switch (find_negativity(this->get_negative(), other.get_negative())) {
         case negativity::nn:
-            this->set_value(add(this->value, other.value));
+            this->set_value(add(this->get_value(), other.get_value()));
             break;
         case negativity::np:
             if (!is_less_than(this->get_value(), other.get_value())) {
-                this->set_value(sub(this->value, other.value));
+                this->set_value(sub(this->get_value(), other.get_value()));
             }
             else {
-                this->set_negative(std::move(false));
-                this->set_value(sub(other.value, this->value));
+                this->set_negative(false);
+                this->set_value(sub(other.get_value(), this->get_value()));
             }
             break;
         case negativity::pn:
             if (!is_less_than(this->get_value(), other.get_value())) {
-                this->set_value(sub(this->value, other.value));
+                this->set_value(sub(this->get_value(), other.get_value()));
             }
             else {
-                this->set_negative(std::move(true));
-                this->set_value(sub(other.value, this->value));
+                this->set_negative(true);
+                this->set_value(sub(other.get_value(), this->get_value()));
             }
             break;
         case negativity::pp:
-            this->set_value(add(this->value, other.value));
+            this->set_value(add(this->get_value(), other.get_value()));
             break;
         default:
             throw std::invalid_argument("");
@@ -204,7 +204,7 @@ BigInt& BigInt::operator+= (const BigInt& other) {
 
     return *this;
 };
-BigInt& BigInt::operator-= (const BigInt& other) { const BigInt value{-other}; *this += value; return *this; }
+BigInt& BigInt::operator-= (const BigInt& other) { const BigInt i{-other}; *this += i; return *this; }
 BigInt& BigInt::operator*= (const BigInt& other) { return *this; }; // todo
 BigInt& BigInt::operator/= (const BigInt& other) { return *this; }; // todo
 BigInt& BigInt::operator%= (const BigInt& other) { return *this; }; // todo
@@ -215,11 +215,11 @@ BigInt& BigInt::operator-- () { *this += -1; return *this; };
 BigInt BigInt::operator++ (int) { BigInt old{*this}; *this += 1; return old; };
 BigInt BigInt::operator-- (int) { BigInt old{*this}; *this += -1; return old; };
 
-BigInt BigInt::operator+ (const BigInt& other) const { BigInt value{*this}; value += other; return value; };
-BigInt BigInt::operator- (const BigInt& other) const { BigInt value{*this}; value -= other; return value; };
-BigInt BigInt::operator* (const BigInt& other) const { BigInt value{*this}; value *= other; return value; };
-BigInt BigInt::operator/ (const BigInt& other) const { BigInt value{*this}; value /= other; return value; };
-BigInt BigInt::operator% (const BigInt& other) const { BigInt value{*this}; value %= other; return value; };
+BigInt BigInt::operator+ (const BigInt& other) const { BigInt i{*this}; i += other; return i; };
+BigInt BigInt::operator- (const BigInt& other) const { BigInt i{*this}; i -= other; return i; };
+BigInt BigInt::operator* (const BigInt& other) const { BigInt i{*this}; i *= other; return i; };
+BigInt BigInt::operator/ (const BigInt& other) const { BigInt i{*this}; i /= other; return i; };
+BigInt BigInt::operator% (const BigInt& other) const { BigInt i{*this}; i %= other; return i; };
 
 BigInt& BigInt::operator<< (const BigInt& other) { *this /= 2; return *this; };
 BigInt& BigInt::operator>> (const BigInt& other) { *this *= 2; return *this; };
@@ -241,15 +241,15 @@ bool BigInt::operator< (const BigInt& other) const {
 bool BigInt::operator> (const BigInt& other) const { return other < *this; };
 bool BigInt::operator<= (const BigInt& other) const { return !(*this > other);};
 bool BigInt::operator>= (const BigInt& other) const { return !(*this < other);};
-bool BigInt::operator== (const BigInt& other) const { return this->value == other.value; };
+bool BigInt::operator== (const BigInt& other) const { return value == other.value; };
 bool BigInt::operator!= (const BigInt& other) const { return !(*this == other); };
 
 std::ostream& operator<< (std::ostream& os, const BigInt& i) {
     return os << i.get();
 }
 std::istream& operator>> (std::istream& is, BigInt& i) {
-    std::string value;
-    is >> value;
-    i.set_value(std::move(value));
+    std::string number;
+    is >> number;
+    i.set(std::move(number));
     return is;
 }
