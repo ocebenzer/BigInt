@@ -2,6 +2,8 @@
 
 #include "bigint.hpp"
 
+using ocb::BigInt;
+
 TEST_CASE("Simple Addition") {
     BigInt i{36};
 

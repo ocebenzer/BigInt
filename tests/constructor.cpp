@@ -2,6 +2,8 @@
 
 #include "bigint.hpp"
 
+using ocb::BigInt;
+
 TEST_CASE("Default Constructor") {
     BigInt i;
     CHECK_EQ(i.get_value(), "0");

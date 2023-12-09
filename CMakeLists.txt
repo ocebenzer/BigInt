@@ -15,7 +15,18 @@ endif()
 
 include_directories(include)
 
-add_library(bigint src/bigint.cpp)
+add_library(utils src/utils.cpp)
+
+add_library(bigint
+    src/bigint/addition.cpp
+    src/bigint/subtraction.cpp
+    src/bigint/multiplication.cpp
+    src/bigint/division.cpp
+    src/bigint/modulo.cpp
+    src/bigint/logical.cpp
+    src/bigint/stream.cpp
+    src/bigint/misc.cpp
+    src/bigint/bigint.cpp)
 
 add_executable(bigint_tests
     tests/constructor.cpp
@@ -24,6 +35,6 @@ add_executable(bigint_tests
     tests/logical.cpp
     tests/main.cpp)
 
-target_link_libraries(bigint_tests PRIVATE bigint)
+target_link_libraries(bigint_tests PRIVATE bigint utils)
 
 add_compile_options(-Wall -Wextra -Wconversion -pedantic -Wfatal-errors)

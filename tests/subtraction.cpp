@@ -2,6 +2,8 @@
 
 #include "bigint.hpp"
 
+using ocb::BigInt;
+
 TEST_CASE("Simple Subtraction") {
     BigInt i{36};
     i -= 6;

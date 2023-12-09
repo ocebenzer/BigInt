@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace ocb {
+
 class BigInt {
 private:
     bool is_negative;
@@ -49,3 +51,5 @@ public:
 
 std::ostream& operator<< (std::ostream&, const BigInt&);
 std::istream& operator>> (std::istream&, BigInt&);
+
+} // namespace ocb

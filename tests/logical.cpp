@@ -2,6 +2,8 @@
 
 #include "bigint.hpp"
 
+using ocb::BigInt;
+
 TEST_CASE("Less Than") {
     BigInt i;
     BigInt j;
