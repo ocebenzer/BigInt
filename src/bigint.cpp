@@ -15,7 +15,21 @@ enum class negativity : uint8_t {
     nn = 3
 };
 
-const auto find_negativity = [] (bool v1, bool v2) { return static_cast<negativity>(v1 >> 1 | v2); };
+const auto find_negativity = [] (bool v1, bool v2) { return static_cast<negativity>(v1 << 1 | v2); };
+
+const auto trim_zeros = [] (std::string& s) {
+    const auto first_not_zero{s.find_first_not_of('0')};
+    switch (first_not_zero) {
+        case 0:
+            break;
+        case std::string::npos:
+            s = "0";
+            break;
+        default:
+            s = s.substr(first_not_zero);
+            break;
+    }
+};
 
 const auto add = [] (const std::string& s1, const std::string& s2) {
     std::stringstream ss{""};
@@ -56,16 +70,18 @@ const auto add = [] (const std::string& s1, const std::string& s2) {
 };
 
 const auto sub = [] (const std::string& s1, const std::string& s2) {
-    std::stringstream ss{""};
-    uint8_t remainder{0};
+    assert(s1.size() >= s2.size());
 
-    const auto sub_digits = [&ss, &remainder] (int n1, int n2=0) {
-        auto sum{n1 - n2 + remainder};
-        if (sum < 0) {
-            remainder = -1;
-            sum += 10;
+    std::stringstream ss{""};
+    uint8_t borrow{0};
+
+    const auto sub_digits = [&ss, &borrow] (int n1, int n2=0) {
+        auto sub{n1 - n2 - borrow};
+        borrow = sub < 0;
+        if (borrow) {
+            sub += 10;
         }
-        ss << std::to_string(sum % 10);
+        ss << std::to_string(sub % 10);
     };
 
     for (auto itr1{s1.rbegin()}, itr2{s2.rbegin()}; itr1 != s1.rend() && itr2 != s2.rend(); itr1++, itr2++) {
@@ -76,41 +92,27 @@ const auto sub = [] (const std::string& s1, const std::string& s2) {
         auto itr{s1.rbegin() + s2.size()};
         auto itr_end{s1.rend()};
 
-        if (s2.size() > s1.size()) {
-            itr = s2.rbegin() + s1.size();
-            itr_end = s2.rend();
-        }
-
         for (; itr != itr_end; itr++) {
             sub_digits(*itr - '0');
         }
     }
 
-    if (remainder) {
-        ss << remainder;
-    }
-
     auto result{ss.str()};
-
     std::reverse(result.begin(), result.end());
+    
+    trim_zeros(result);
     return result;
 };
 
 const auto is_less_than = [] (const std::string& s1, const std::string& s2) {
-    auto itr1{s1.rbegin()};
-    auto itr2{s2.rbegin()};
-    const auto& itr1_end{s1.rend()};
-    const auto& itr2_end{s2.rend()};
-    while (itr1 < itr1_end && itr2 < itr2_end) {
-        if (*itr1 != *itr2) {
-            return *itr1 < *itr2;
+    if (s1.size() == s2.size()) {
+        for (auto itr1{s1.begin()}, itr2{s2.begin()}; itr1 < s1.end(); itr1++, itr2++) {
+            if (*itr1 != *itr2) {
+                return *itr1 < *itr2;
+            }
         }
-        itr1++;
-        itr2++;
     }
-    const auto& remaining1{itr1_end - itr1};
-    const auto& remaining2{itr2_end - itr2};
-    return remaining1 < remaining2;
+    return s1.size() < s2.size();
 };
 
 BigInt::BigInt(const std::string& value) { this->set_value(std::string{value}); };
@@ -144,17 +146,9 @@ void BigInt::set_value(std::string&& new_value) {
         this->value += std::string{n, '0'};
     }
 
-    const auto first_not_zero{this->value.find_first_not_of('0')};
-    switch (first_not_zero) {
-        case 0:
-            break;
-        case std::string::npos:
-            this->set_negative(false);
-            this->value = "0";
-            break;
-        default:
-            this->value = this->value.substr(first_not_zero);
-            break;
+    trim_zeros(this->value);
+    if (this->value == "0") {
+        this->set_negative(false);
     }
 }
 void BigInt::set_negative(const bool val) { this->is_negative = val; }
@@ -175,7 +169,7 @@ BigInt& BigInt::operator+= (const BigInt& other) {
             this->set_value(add(this->value, other.value));
             break;
         case negativity::np:
-            if (*this > other) {
+            if (!is_less_than(this->get_value(), other.get_value())) {
                 this->set_value(sub(this->value, other.value));
             }
             else {
@@ -184,7 +178,7 @@ BigInt& BigInt::operator+= (const BigInt& other) {
             }
             break;
         case negativity::pn:
-            if (*this > other) {
+            if (!is_less_than(this->get_value(), other.get_value())) {
                 this->set_value(sub(this->value, other.value));
             }
             else {
