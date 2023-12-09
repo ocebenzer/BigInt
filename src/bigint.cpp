@@ -1,12 +1,10 @@
 #include "bigint.hpp"
 
-#include <cstdint>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <sstream>
-#include <algorithm>
 #include <regex>
+#include <cstdint>
+#include <cassert>
+#include <sstream>
+#include <stdexcept>
 
 enum class negativity : uint8_t {
     pp = 0,
@@ -201,10 +199,10 @@ BigInt& BigInt::operator/= (const BigInt& other) { return *this; }; // todo
 BigInt& BigInt::operator%= (const BigInt& other) { return *this; }; // todo
 
 BigInt& BigInt::operator++ () { *this += 1; return *this; };
-BigInt& BigInt::operator-- () { *this -= 1; return *this; };
+BigInt& BigInt::operator-- () { *this += -1; return *this; };
 
 BigInt BigInt::operator++ (int) { BigInt old{*this}; *this += 1; return old; };
-BigInt BigInt::operator-- (int) { BigInt old{*this}; *this -= 1; return old; };
+BigInt BigInt::operator-- (int) { BigInt old{*this}; *this += -1; return old; };
 
 BigInt BigInt::operator+ (const BigInt& other) const { BigInt value{*this}; value += other; return value; };
 BigInt BigInt::operator- (const BigInt& other) const { BigInt value{*this}; value -= other; return value; };
@@ -229,9 +227,9 @@ bool BigInt::operator< (const BigInt& other) const {
             throw std::invalid_argument("");
     }
 };
-bool BigInt::operator> (const BigInt& other) const { return *this < other; };
-bool BigInt::operator<= (const BigInt& other) const { return !(other > *this);};
-bool BigInt::operator>= (const BigInt& other) const { return !(other < *this);};
+bool BigInt::operator> (const BigInt& other) const { return other < *this; };
+bool BigInt::operator<= (const BigInt& other) const { return !(*this > other);};
+bool BigInt::operator>= (const BigInt& other) const { return !(*this < other);};
 bool BigInt::operator== (const BigInt& other) const { return this->value == other.value; };
 bool BigInt::operator!= (const BigInt& other) const { return !(*this == other); };
 
