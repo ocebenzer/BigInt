@@ -14,10 +14,12 @@ public:
 
     const std::string& get_value() const;
     const bool& get_negative() const;
+    std::string get() const;
     void set_value(std::string&&);
     void set_negative(const bool);
+    void set(std::string&&);
 
-    std::string get() const;
+    bool is_greater_than_int64_max() const;
 
     BigInt operator+ () const;
     BigInt operator- () const;

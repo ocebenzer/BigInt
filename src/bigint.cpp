@@ -31,7 +31,7 @@ const auto trim_zeros = [] (std::string& s) {
 
 const auto add = [] (const std::string& s1, const std::string& s2) {
     std::stringstream ss{""};
-    uint8_t remainder{0};
+    int remainder{0};
 
     const auto add_digits = [&ss, &remainder] (int n1, int n2=0) {
         const auto sum{n1 + n2 + remainder};
@@ -123,39 +123,50 @@ const std::string& BigInt::get_value() const { return this->value; }
 
 const bool& BigInt::get_negative() const { return this->is_negative; }
 
-void BigInt::set_value(std::string&& new_value) {
-    const std::regex regex{"([+-])?0*(\\d*)([eE][+]?(\\d+))?"};
-    std::smatch matches;
-    if (!std::regex_match(new_value, matches, regex)) {
-            throw std::invalid_argument(new_value);
-    }
-    
-    this->set_negative(matches[1].matched && matches[1] == "-");
-
-    if (matches[2].str().empty()) {
-        this->value = "0";
-    }
-    else {
-        this->value = matches[2];
-    }
-
-    if (matches[3].matched) {
-        const auto n{static_cast<char>(std::stoi(matches[4].str()))};
-        this->value += std::string{n, '0'};
-    }
-
-    trim_zeros(this->value);
-    if (this->value == "0") {
-        this->set_negative(false);
-    }
-}
-void BigInt::set_negative(const bool val) { this->is_negative = val; }
-
 std::string BigInt::get() const {
     if (this->get_negative()) {
         return "-" + this->get_value();
     }
     return this->get_value();
+}
+
+void BigInt::set_value(std::string&& number) { value = std::move(number); }
+
+void BigInt::set_negative(const bool val) { this->is_negative = val; }
+
+void BigInt::set(std::string&& number) {
+    const std::regex regex{"([+-])?0*(\\d*)([eE][+]?(\\d+))?"};
+    std::smatch matches;
+    if (!std::regex_match(number, matches, regex)) {
+            throw std::invalid_argument(number);
+    }
+    
+    this->set_negative(matches[1].matched && matches[1] == "-");
+
+    std::string new_value;
+
+    if (matches[2].str().empty()) {
+        new_value = "0";
+    }
+    else {
+        new_value = matches[2];
+    }
+
+    if (matches[3].matched) {
+        const auto n{static_cast<char>(std::stoi(matches[4].str()))};
+        new_value += std::string{n, '0'};
+    }
+
+    trim_zeros(new_value);
+    if (new_value == "0") {
+        this->set_negative(false);
+    }
+
+    this->set_value(std::move(new_value));
+}
+
+bool BigInt::is_greater_than_int64_max() const {
+    return *this > INT64_MAX;
 }
 
 BigInt BigInt::operator+ () const { BigInt value{*this}; return value; }
