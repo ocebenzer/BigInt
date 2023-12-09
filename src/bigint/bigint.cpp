@@ -45,23 +45,23 @@ void BigInt::set(std::string&& number) {
             throw std::invalid_argument(number);
     }
 
-    this->set_negative(matches[1].matched && matches[1] == "-");
+    this->set_negative(matches[1] == "-");
 
     std::string new_value;
 
-    if (matches[2].str().empty()) {
-        new_value = "0";
-    }
-    else {
-        new_value = matches[2];
-    }
+    new_value = matches[2].str();
 
     if (matches[3].matched) {
-        const auto n{static_cast<char>(std::stoi(matches[4].str()))};
-        new_value += std::string{n, '0'};
+        const auto n{std::stoll(matches[4].str())};
+        new_value += std::string(n, '0');
     }
 
     trim_zeros(new_value);
+
+    if (new_value.empty()) {
+        new_value = "0";
+    }
+
     if (new_value == "0") {
         this->set_negative(false);
     }
