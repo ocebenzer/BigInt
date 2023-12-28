@@ -1,9 +1,8 @@
 #include "bigint.hpp"
 #include "utils.hpp"
 
-#include <numeric>
-#include <string>
 #include <vector>
+#include <numeric>
 
 namespace ocb {
 
@@ -13,24 +12,24 @@ BigInt& BigInt::operator*= (const BigInt& other) {
         return *this;
     }
 
-    std::vector<std::string> partials;
-    const auto& value2{other.get_value()};
+    std::vector<std::string> partial_values;
+    const auto multiplied_value{other.get_value()};
     int padding{0};
-    for (auto itr2{value2.rbegin()}; itr2 < value2.rend(); ++itr2) {
+    for (auto itr2{multiplied_value.rbegin()}; itr2 < multiplied_value.rend(); ++itr2) {
         const auto d2{*itr2 - '0'};
-        auto value1{this->get_value()};
+        std::string partial_value{this->get_value()};
         int remainder{0};
-        for (auto itr1{value1.rbegin()}; itr1 < value1.rend(); ++itr1) {
+        for (auto itr1{partial_value.rbegin()}; itr1 < partial_value.rend(); ++itr1) {
             const auto d1{*itr1 - '0'};
             remainder = d1 * d2 + remainder;
-            *itr1 = (remainder % 10) + '0';
+            *itr1 = remainder % 10 + '0';
             remainder /= 10;
         }
-        partials.push_back(std::to_string(remainder) + value1 + std::string(padding, '0'));
+        partial_values.push_back(std::to_string(remainder) + partial_value + std::string(padding, '0'));
         ++padding;
     }
 
-    auto result{std::reduce(partials.begin()+1, partials.end(), *partials.begin(), add)};
+    auto result{std::reduce(partial_values.begin()+1, partial_values.end(), *partial_values.begin(), add)};
     trim_zeros(result);
 
     this->set_value(std::move(result));

@@ -33,7 +33,10 @@ add_executable(bigint_tests
     tests/addition.cpp
     tests/subtraction.cpp
     tests/multiplication.cpp
+    tests/division.cpp
+    tests/modulo.cpp
     tests/logical.cpp
+    tests/stream.cpp
     tests/main.cpp)
 
 target_link_libraries(bigint_tests PRIVATE bigint utils)
