@@ -2,7 +2,6 @@
 #include "utils.hpp"
 
 #include <regex>
-#include <string>
 
 namespace ocb {
 
@@ -16,8 +15,8 @@ BigInt::BigInt(std::string&& number) {
 
 BigInt::BigInt(const long long number) : BigInt(std::to_string(number)) { };
 
-const std::string& BigInt::get_value() const {
-    return this->value;
+const std::string_view BigInt::get_value() const {
+    return std::string_view(this->value);
 }
 
 const bool& BigInt::get_negative() const {
@@ -26,9 +25,9 @@ const bool& BigInt::get_negative() const {
 
 std::string BigInt::get() const {
     if (this->get_negative()) {
-        return "-" + this->get_value();
+        return "-" + this->value;
     }
-    return this->get_value();
+    return std::string(this->get_value());
 }
 
 void BigInt::set_value(std::string&& number) {

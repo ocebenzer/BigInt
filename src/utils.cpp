@@ -25,80 +25,75 @@ negativity calculate_negativity(bool v1, bool v2) {
 }
 
 
-std::string add (const std::string& s1, const std::string& s2){
-    std::stringstream ss{""};
-    int remainder{0};
+std::string add (const std::string_view s1, const std::string_view s2){
+    std::string final_value{s1};
+    std::string_view added_value{s2};
 
-    const auto add_digits = [&ss, &remainder] (int n1, int n2=0) {
-        const auto sum{n1 + n2 + remainder};
-        remainder = sum / 10;
-        ss << std::to_string(sum % 10);
-    };
-
-    for (auto itr1{s1.rbegin()}, itr2{s2.rbegin()}; itr1 != s1.rend() && itr2 != s2.rend(); itr1++, itr2++) {
-        add_digits(*itr1 - '0', *itr2 - '0');
+    if (is_less_than(s1, s2)) {
+        final_value = s2;
+        added_value = s1;
     }
 
-    {
-        auto itr{s1.rbegin() + s2.size()};
-        auto itr_end{s1.rend()};
+    auto itr1{final_value.rbegin()};
+    auto itr2{added_value.rbegin()};
 
-        if (s2.size() > s1.size()) {
-            itr = s2.rbegin() + s1.size();
-            itr_end = s2.rend();
-        }
+    int remainder{0};
+    for (; itr2 < added_value.rend(); ++itr1, ++itr2) {
+        remainder += *itr1 - '0' + *itr2 - '0';
+        *itr1 = remainder % 10 + '0';
+        remainder /= 10;
+    }
 
-        for (; itr != itr_end; itr++) {
-            add_digits(*itr - '0');
-        }
+    for (; itr1 < final_value.rend(); ++itr1) {
+        remainder += *itr1 - '0';
+        *itr1 = remainder % 10 + '0';
+        remainder /= 10;
     }
 
     if (remainder) {
-        ss << remainder;
+        return std::to_string(remainder) + final_value;
     }
 
-    auto result{ss.str()};
-
-    std::reverse(result.begin(), result.end());
-    return result;
+    return final_value;
 }
 
-std::string sub (const std::string& s1, const std::string& s2) {
+std::string sub (const std::string_view s1, const std::string_view s2) {
     assert(s1.size() >= s2.size());
 
-    std::stringstream ss{""};
-    bool borrow{0};
+    std::string final_value{s1};
 
-    const auto sub_digits = [&ss, &borrow] (int n1, int n2=0) {
-        auto sub{n1 - n2 - borrow};
-        borrow = sub < 0;
-        if (borrow) {
-            sub += 10;
+    auto itr1{final_value.rbegin()};
+    auto itr2{s2.rbegin()};
+
+    int borrow{0};
+    bool borrowed{false};
+    for (; itr2 < s2.rend(); ++itr1, ++itr2) {
+        borrow = *itr1 - *itr2 + borrow;
+        borrowed = borrow < 0;
+        if (borrowed) {
+            borrow += 10;
         }
-        ss << std::to_string(sub);
-    };
-
-    for (auto itr1{s1.rbegin()}, itr2{s2.rbegin()}; itr1 != s1.rend() && itr2 != s2.rend(); itr1++, itr2++) {
-        sub_digits(*itr1 - '0', *itr2 - '0');
+        *itr1 = borrow % 10 + '0';
+        borrow = borrowed ? -1 : 0;
     }
 
-    {
-        auto itr{s1.rbegin() + s2.size()};
-        auto itr_end{s1.rend()};
-
-        for (; itr != itr_end; itr++) {
-            sub_digits(*itr - '0');
+    for (; itr1 < final_value.rend(); ++itr1) {
+        borrow = *itr1 - '0' + borrow;
+        borrowed = borrow < 0;
+        if (borrowed) {
+            borrow += 10;
         }
+        *itr1 = borrow % 10 + '0';
+        borrow = borrowed ? -1 : 0;
     }
 
-    auto result{ss.str()};
-    std::reverse(result.begin(), result.end());
+    assert(!borrowed);
 
-    trim_zeros(result);
-    return result;
+    trim_zeros(final_value);
+    return final_value;
 }
 
-bool is_less_than (const std::string& s1, const std::string& s2) {
+bool is_less_than (const std::string_view s1, const std::string_view s2) {
     if (s1.size() == s2.size()) {
         for (auto itr1{s1.begin()}, itr2{s2.begin()}; itr1 < s1.end(); itr1++, itr2++) {
             if (*itr1 != *itr2) {

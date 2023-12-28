@@ -23,16 +23,16 @@ void trim_zeros (std::string&);
 /**
  * add two number-strings
  */
-std::string add (const std::string&, const std::string&);
+std::string add (const std::string_view, const std::string_view);
 
 /**
  * subtract two number-strings
  */
-std::string sub (const std::string&, const std::string&);
+std::string sub (const std::string_view, const std::string_view);
 
 /**
  * compare two number-strings
  */
-bool is_less_than (const std::string&, const std::string&);
+bool is_less_than (const std::string_view, const std::string_view);
 
 } // namespace ocb

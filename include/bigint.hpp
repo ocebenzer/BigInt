@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 namespace ocb {
 
@@ -14,7 +15,7 @@ public:
     BigInt(std::string&&);
     BigInt(const long long);
 
-    const std::string& get_value() const;
+    const std::string_view get_value() const;
     const bool& get_negative() const;
     std::string get() const;
     void set_value(std::string&&);
