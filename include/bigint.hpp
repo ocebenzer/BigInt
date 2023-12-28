@@ -20,6 +20,7 @@ public:
     void set_value(std::string&&);
     void set_negative(const bool);
     void set(std::string&&);
+    void set(int number);
 
     bool is_greater_than_int64_max() const;
 

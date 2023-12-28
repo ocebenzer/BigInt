@@ -8,13 +8,31 @@ enum class negativity : uint8_t {
     np = 2,
     nn = 3
 };
-negativity calculate_negativity (bool n1, bool n2);
 
+/**
+ * return @enum negativity 
+ * very specific use case: switch-cases inside addition & subtraction operations
+ */
+negativity calculate_negativity (bool, bool);
+
+/**
+ * remove '0' characters before a number-string
+ */
 void trim_zeros (std::string&);
 
+/**
+ * add two number-strings
+ */
 std::string add (const std::string&, const std::string&);
+
+/**
+ * subtract two number-strings
+ */
 std::string sub (const std::string&, const std::string&);
 
+/**
+ * compare two number-strings
+ */
 bool is_less_than (const std::string&, const std::string&);
 
 } // namespace ocb

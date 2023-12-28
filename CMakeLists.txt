@@ -32,6 +32,7 @@ add_executable(bigint_tests
     tests/constructor.cpp
     tests/addition.cpp
     tests/subtraction.cpp
+    tests/multiplication.cpp
     tests/logical.cpp
     tests/main.cpp)
 

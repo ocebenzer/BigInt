@@ -2,6 +2,10 @@
 
 #include "bigint.hpp"
 
+#include <cstdint>
+#include <random>
+#include <string>
+
 using ocb::BigInt;
 
 TEST_CASE("Simple Addition") {
@@ -49,4 +53,22 @@ TEST_CASE("Negative Addition") {
     CHECK_EQ(res.get(), "-1080");
     CHECK_EQ(res.get_value(), "1080");
     CHECK_EQ(res.get_negative(), true);
+}
+
+TEST_CASE("Random Generation") {
+    std::mt19937_64 rng;
+    std::uniform_int_distribution<int64_t> distribution;
+
+    for (int i{0}; i < 10; ++i) {
+        const int64_t n1{distribution(rng) / 2};
+        const int64_t n2{distribution(rng) / 2};
+        const int64_t sum{n1 + n2};
+
+        BigInt big1{std::to_string(n1)};
+        BigInt big2{std::to_string(n2)};
+        BigInt big_sum{big1 + big2};
+        CHECK_EQ(big_sum, std::llabs(sum));
+        CHECK_EQ(big_sum.get_negative(), sum < 0);
+        CHECK_EQ(big_sum.get(), std::to_string(sum));
+    }
 }

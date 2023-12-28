@@ -2,6 +2,7 @@
 #include "utils.hpp"
 
 #include <regex>
+#include <string>
 
 namespace ocb {
 
@@ -67,6 +68,10 @@ void BigInt::set(std::string&& number) {
     }
 
     this->set_value(std::move(new_value));
+}
+
+void BigInt::set(int number) {
+    this->set(std::to_string(number));
 }
 
 } // namespace ocb
