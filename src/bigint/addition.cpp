@@ -12,20 +12,28 @@ BigInt& BigInt::operator+= (const BigInt& other) {
             break;
         case negativity::np:
             if (!is_less_than(this->value, other.get_value())) {
-                this->set_value(sub(this->value, other.get_value()));
+                auto value{sub(this->value, other.get_value())};
+                trim_zeros(value);
+                this->set_value(std::move(value));
             }
             else {
                 this->set_negative(false);
-                this->set_value(sub(other.get_value(), this->value));
+                auto value{sub(other.get_value(), this->value)};
+                trim_zeros(value);
+                this->set_value(std::move(value));
             }
             break;
         case negativity::pn:
             if (!is_less_than(this->value, other.get_value())) {
-                this->set_value(sub(this->value, other.get_value()));
+                auto value{sub(this->value, other.get_value())};
+                trim_zeros(value);
+                this->set_value(std::move(value));
             }
             else {
                 this->set_negative(true);
-                this->set_value(sub(other.get_value(), this->value));
+                auto value{sub(other.get_value(), this->value)};
+                trim_zeros(value);
+                this->set_value(std::move(value));
             }
             break;
         case negativity::pp:

@@ -58,7 +58,7 @@ std::string add (const std::string_view s1, const std::string_view s2){
 }
 
 std::string sub (const std::string_view s1, const std::string_view s2) {
-    assert(s1.size() >= s2.size());
+    assert(!is_less_than(s1, s2));
 
     std::string final_value{s1};
 
@@ -89,7 +89,6 @@ std::string sub (const std::string_view s1, const std::string_view s2) {
 
     assert(!borrowed);
 
-    trim_zeros(final_value);
     return final_value;
 }
 

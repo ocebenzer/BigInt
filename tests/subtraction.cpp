@@ -73,10 +73,10 @@ TEST_CASE("Random Generation") {
         const int64_t n2{distribution(rng) / 2};
         const int64_t sub{n1 - n2};
 
-        BigInt big1{std::to_string(n1)};
-        BigInt big2{std::to_string(n2)};
+        BigInt big1{n1};
+        BigInt big2{n2};
         BigInt big_sub{big1 - big2};
-        CHECK_EQ(big_sub, std::llabs(sub));
+        CHECK_EQ(big_sub, sub);
         CHECK_EQ(big_sub.get_negative(), sub < 0);
         CHECK_EQ(big_sub.get(), std::to_string(sub));
     }

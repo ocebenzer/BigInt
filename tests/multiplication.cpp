@@ -58,10 +58,10 @@ TEST_CASE("Random Generation") {
         const int64_t n2{distribution(rng)};
         const int64_t mul{n1 * n2};
 
-        BigInt big1{std::to_string(n1)};
-        BigInt big2{std::to_string(n2)};
+        BigInt big1{n1};
+        BigInt big2{n2};
         BigInt big_mul{big1 * big2};
-        CHECK_EQ(big_mul, std::llabs(mul));
+        CHECK_EQ(big_mul, mul);
         CHECK_EQ(big_mul.get_negative(), mul < 0);
         CHECK_EQ(big_mul.get(), std::to_string(mul));
     }

@@ -64,10 +64,10 @@ TEST_CASE("Random Generation") {
         const int64_t n2{distribution(rng) / 2};
         const int64_t sum{n1 + n2};
 
-        BigInt big1{std::to_string(n1)};
-        BigInt big2{std::to_string(n2)};
+        BigInt big1{n1};
+        BigInt big2{n2};
         BigInt big_sum{big1 + big2};
-        CHECK_EQ(big_sum, std::llabs(sum));
+        CHECK_EQ(big_sum, sum);
         CHECK_EQ(big_sum.get_negative(), sum < 0);
         CHECK_EQ(big_sum.get(), std::to_string(sum));
     }

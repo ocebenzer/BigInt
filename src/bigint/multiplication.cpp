@@ -29,11 +29,13 @@ BigInt& BigInt::operator*= (const BigInt& other) {
         ++padding;
     }
 
+{
     auto result{std::reduce(partial_values.begin()+1, partial_values.end(), *partial_values.begin(), add)};
     trim_zeros(result);
 
     this->set_value(std::move(result));
     this->set_negative(this->get_negative() ^ other.get_negative());
+}
 
     return *this;
 };
