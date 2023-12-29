@@ -30,6 +30,13 @@ std::string add (const std::string_view, const std::string_view);
  */
 std::string sub (const std::string_view, const std::string_view);
 
+
+/**
+ * divide two number-strings
+ * @returns [quotient, remainder]
+ */
+std::pair<std::string, std::string> divide (const std::string_view, const std::string_view);
+
 /**
  * compare two number-strings
  */

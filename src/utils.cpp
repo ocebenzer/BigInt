@@ -92,6 +92,72 @@ std::string sub (const std::string_view s1, const std::string_view s2) {
     return final_value;
 }
 
+std::pair<std::string, std::string> divide (const std::string_view s1, const std::string_view s2) {
+    if (s2.find_first_not_of('0') == std::string::npos) {
+        throw std::invalid_argument("divide by 0");
+    }
+
+    int start_index{0};
+    int end_index(1);
+
+    if (is_less_than(s1, s2)) {
+        return {"0", std::string{s1}};
+    }
+
+    {
+        auto reduced_this_value{s1.substr(start_index, end_index)};
+        while (is_less_than(reduced_this_value, s2)) {
+            ++end_index;
+            reduced_this_value = s1.substr(start_index, end_index);
+        }
+    }
+
+    std::string divident{s1};
+    std::stringstream quotient;
+
+    for (; end_index <= divident.size(); ++end_index) {
+        const std::string_view partial_divident{divident.begin()+start_index, divident.begin()+end_index};
+
+        if (!is_less_than(partial_divident, s2)) {
+            std::string partial_divisor{s2};
+            int partial_quotient{1};
+
+            while (is_less_than(partial_divisor, partial_divident)) {
+                partial_divisor = add(partial_divisor, s2);
+                ++partial_quotient;
+            }
+            // if remainder, undo last addition
+            if (is_less_than(partial_divident, partial_divisor)) {
+                partial_divisor = sub(partial_divisor, s2);
+                trim_zeros(partial_divisor);
+                --partial_quotient;
+            }
+            quotient << static_cast<char>(partial_quotient + '0');
+
+            {
+                const std::string padding(divident.size()-end_index, '0');
+                const std::string padded_partial_divisor{partial_divisor + padding};
+
+                if (divident == padded_partial_divisor) {
+                    quotient << padding;
+                    divident = "0";
+                    break;
+                }
+
+                divident = sub(divident, padded_partial_divisor);
+                while (divident[start_index] == '0') {
+                    ++start_index;
+                }
+            }
+        }
+        else {
+            quotient << static_cast<char>('0');
+        }
+    }
+
+    return {quotient.str(), divident};
+}
+
 bool is_less_than (const std::string_view s1, const std::string_view s2) {
     if (s1.size() == s2.size()) {
         for (auto itr1{s1.begin()}, itr2{s2.begin()}; itr1 < s1.end(); itr1++, itr2++) {
