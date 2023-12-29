@@ -39,7 +39,7 @@ TEST_CASE("Negative Multiplication") {
     CHECK_EQ(res.get_value(), "270");
     CHECK_EQ(res.get_negative(), false);
 
-    res = res * -2;
+    res = -2 * res;
     CHECK_EQ(res.get(), "-540");
     CHECK_EQ(res.get_value(), "540");
     CHECK_EQ(res.get_negative(), true);

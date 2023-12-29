@@ -11,7 +11,7 @@ BigInt& BigInt::operator+= (const BigInt& other) {
             this->set_value(add(this->value, other.get_value()));
             break;
         case negativity::np:
-            if (!is_less_than(this->value, other.get_value())) {
+            if (is_less_than(other.get_value(), this->value)) {
                 auto value{sub(this->value, other.get_value())};
                 trim_zeros(value);
                 this->set_value(std::move(value));
@@ -57,10 +57,9 @@ BigInt BigInt::operator++ (int) {
     return old;
 };
 
-BigInt BigInt::operator+ (const BigInt& other) const {
-    BigInt i{*this};
-    i += other;
-    return i;
+BigInt operator+ (BigInt lhs, const BigInt& rhs)  {
+    lhs += rhs;
+    return lhs;
 };
 
 } // namespace ocb

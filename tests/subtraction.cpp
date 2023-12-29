@@ -59,7 +59,7 @@ TEST_CASE("Negative Subtraction") {
     CHECK_EQ(res.get_value(), "160");
     CHECK_EQ(res.get_negative(), false);
 
-    res = res - 160;
+    res = -160 + res;
     CHECK_EQ(res.get(), "0");
     CHECK_EQ(res.get_value(), "0");
     CHECK_EQ(res.get_negative(), false);

@@ -50,7 +50,7 @@ TEST_CASE("Negative Addition") {
     CHECK_EQ(res.get_value(), "80");
     CHECK_EQ(res.get_negative(), true);
 
-    res = res + -1000;
+    res = -1000 + res;
     CHECK_EQ(res.get(), "-1080");
     CHECK_EQ(res.get_value(), "1080");
     CHECK_EQ(res.get_negative(), true);

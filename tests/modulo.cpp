@@ -67,13 +67,13 @@ TEST_CASE("Modulo of Zero") {
 
     CHECK_THROWS(i %= 0);
 
-    // auto res{0 % i};
-    // CHECK_EQ(res.get(), "0");
-    // CHECK_EQ(res.get_value(), "0");
-    // CHECK_EQ(res.get_negative(), false);
+    auto res{0 % i};
+    CHECK_EQ(res.get(), "0");
+    CHECK_EQ(res.get_value(), "0");
+    CHECK_EQ(res.get_negative(), false);
 
-    // res = -0 % i;
-    // CHECK_EQ(res.get(), "0");
-    // CHECK_EQ(res.get_value(), "0");
-    // CHECK_EQ(res.get_negative(), false);
+    res = -0 % i;
+    CHECK_EQ(res.get(), "0");
+    CHECK_EQ(res.get_value(), "0");
+    CHECK_EQ(res.get_negative(), false);
 }

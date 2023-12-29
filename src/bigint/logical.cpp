@@ -5,39 +5,39 @@
 
 namespace ocb {
 
-bool BigInt::operator< (const BigInt& other) const {
-    switch (calculate_negativity(this->get_negative(), other.get_negative())) {
+bool operator< (const BigInt& lhs, const BigInt& rhs)  {
+    switch (calculate_negativity(lhs.get_negative(), rhs.get_negative())) {
         case negativity::nn:
-            return is_less_than(other.get_value(), this->get_value());
+            return is_less_than(rhs.get_value(), lhs.get_value());
         case negativity::np:
             return true;
         case negativity::pn:
             return false;
         case negativity::pp:
-            return is_less_than(this->get_value(), other.get_value());
+            return is_less_than(lhs.get_value(), rhs.get_value());
         default:
             throw std::invalid_argument("");
     }
 };
 
-bool BigInt::operator> (const BigInt& other) const {
-    return other < *this;
+bool operator> (const BigInt& lhs, const BigInt& rhs)  {
+    return rhs < lhs;
 };
 
-bool BigInt::operator<= (const BigInt& other) const {
-    return !(*this > other);
+bool operator<= (const BigInt& lhs, const BigInt& rhs)  {
+    return !(rhs < lhs);
 };
 
-bool BigInt::operator>= (const BigInt& other) const {
-    return !(*this < other);
+bool operator>= (const BigInt& lhs, const BigInt& rhs)  {
+    return !(lhs < rhs);
 };
 
-bool BigInt::operator== (const BigInt& other) const {
-    return is_negative == other.is_negative && value == other.value;
+bool operator== (const BigInt& lhs, const BigInt& rhs)  {
+    return lhs.get_negative() == rhs.get_negative() && lhs.get_value() == rhs.get_value();
 };
 
-bool BigInt::operator!= (const BigInt& other) const {
-    return !(*this == other);
+bool operator!= (const BigInt& lhs, const BigInt& rhs)  {
+    return !(lhs == rhs);
 };
 
 } // namespace ocb

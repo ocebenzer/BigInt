@@ -19,10 +19,9 @@ BigInt BigInt::operator-- (int) {
     return old;
 };
 
-BigInt BigInt::operator- (const BigInt& other) const {
-    BigInt i{*this};
-    i -= other;
-    return i;
+BigInt operator- (BigInt lhs, const BigInt& rhs)  {
+    lhs -= rhs;
+    return lhs;
 };
 
 } // namespace ocb

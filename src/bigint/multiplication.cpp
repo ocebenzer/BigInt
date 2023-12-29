@@ -40,10 +40,10 @@ BigInt& BigInt::operator*= (const BigInt& other) {
     return *this;
 };
 
-BigInt BigInt::operator* (const BigInt& other) const {
-    BigInt i{*this};
-    i *= other;
-    return i;
+
+BigInt operator* (BigInt lhs, const BigInt& rhs)  {
+    lhs *= rhs;
+    return lhs;
 };
 
 } // namespace ocb
