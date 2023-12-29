@@ -10,7 +10,7 @@ enum class negativity : uint8_t {
 };
 
 /**
- * return @enum negativity 
+ * return @enum negativity
  * very specific use case: switch-cases inside addition & subtraction operations
  */
 negativity calculate_negativity (bool, bool);

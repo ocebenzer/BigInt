@@ -42,7 +42,7 @@ void BigInt::set(std::string&& number) {
     const std::regex regex{"([+-])?0*(\\d*)([eE][+]?(\\d+))?"};
     std::smatch matches;
     if (!std::regex_match(number, matches, regex)) {
-            throw std::invalid_argument(number);
+        throw std::invalid_argument(number);
     }
 
     this->set_negative(matches[1] == "-");

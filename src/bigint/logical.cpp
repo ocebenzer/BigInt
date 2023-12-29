@@ -33,7 +33,7 @@ bool BigInt::operator>= (const BigInt& other) const {
 };
 
 bool BigInt::operator== (const BigInt& other) const {
-    return value == other.value;
+    return is_negative == other.is_negative && value == other.value;
 };
 
 bool BigInt::operator!= (const BigInt& other) const {
