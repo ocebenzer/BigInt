@@ -11,7 +11,7 @@ private:
     std::string value;
 
 public:
-    BigInt(const std::string& = "");
+    BigInt(const std::string& = "0");
     BigInt(std::string&&);
     BigInt(const long long);
 

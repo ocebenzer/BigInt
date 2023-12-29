@@ -1,6 +1,7 @@
 #include "doctest/doctest.h"
 
 #include "bigint.hpp"
+#include "constants.hpp"
 
 #include <cstdint>
 #include <random>
@@ -87,7 +88,7 @@ TEST_CASE("Random Generation") {
     std::mt19937_64 rng;
     std::uniform_int_distribution<int64_t> distribution;
 
-    for (int i{0}; i < 10; ++i) {
+    for (int i{0}; i < NUM_GENERATIONAL_TESTS; ++i) {
         const int64_t n1{distribution(rng)};
         const int64_t n2{static_cast<int32_t>(distribution(rng))};
         if (n2 == 0) continue;
@@ -109,4 +110,14 @@ TEST_CASE("Divide by Zero") {
     CHECK_EQ(i.get_negative(), false);
 
     CHECK_THROWS(i /= 0);
+
+    // auto res{0 / i};
+    // CHECK_EQ(res.get(), "0");
+    // CHECK_EQ(res.get_value(), "0");
+    // CHECK_EQ(res.get_negative(), false);
+
+    // res = -0 / i;
+    // CHECK_EQ(res.get(), "0");
+    // CHECK_EQ(res.get_value(), "0");
+    // CHECK_EQ(res.get_negative(), false);
 }

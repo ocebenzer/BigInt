@@ -1,6 +1,7 @@
 #include "doctest/doctest.h"
 
 #include "bigint.hpp"
+#include "constants.hpp"
 
 #include <random>
 
@@ -68,7 +69,7 @@ TEST_CASE("Random Generation") {
     std::mt19937_64 rng;
     std::uniform_int_distribution<int64_t> distribution;
 
-    for (int i{0}; i < 10; ++i) {
+    for (int i{0}; i < NUM_GENERATIONAL_TESTS; ++i) {
         const int64_t n1{distribution(rng) / 2};
         const int64_t n2{distribution(rng) / 2};
         const int64_t sub{n1 - n2};
