@@ -11,11 +11,14 @@ bool BigInt::is_greater_than_int64_max() const {
     return *this > INT64_MAX;
 }
 
-/**
- * Only supports up to 2^63, too bad!
- */
 BigInt find_pow_of_2(const BigInt& pow) {
-    return std::pow(2, std::atoll(pow.get().c_str()));
+    const auto half_pow{find_pow_of_2(pow/2)};
+
+    if (pow % 2 == 0) {
+        return half_pow * half_pow;
+    }
+
+    return half_pow * half_pow * 2;
 }
 
 BigInt operator<< (BigInt lhs, const BigInt& rhs)  {
