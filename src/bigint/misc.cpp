@@ -1,5 +1,5 @@
 #include "bigint.hpp"
-
+#include <cstdint>
 #include <cmath>
 
 namespace ocb {
