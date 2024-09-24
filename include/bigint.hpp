@@ -11,6 +11,8 @@ private:
     std::string value;
 
 public:
+    static BigInt factorial(int);
+
     BigInt(const std::string& = "0");
     BigInt(std::string&&);
     BigInt(const long long);
