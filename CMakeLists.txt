@@ -4,13 +4,9 @@ project(bigint)
 set(CMAKE_CXX_STANDARD 20)
 set(CXX_STANDARD_REQUIRED ON)
 
-include(CTest)
-enable_testing()
-
-find_package(doctest REQUIRED)
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
+find_package(doctest)
+if (NOT doctest_FOUND)
+    include_directories(${DOCTEST_PATH})
 endif()
 
 include_directories(include)
