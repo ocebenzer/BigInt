@@ -1,5 +1,7 @@
 #pragma once
 
+#include <istream>
+#include <ostream>
 #include <string>
 #include <string_view>
 

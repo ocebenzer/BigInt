@@ -33,7 +33,7 @@ TEST_CASE("Random Constructor Generation") {
     for (int i{0}; i < 10; ++i) {
         const auto num{distribution(rng)};
         const auto num_str{std::to_string(num)};
-        const auto exp{static_cast<u_int8_t>(distribution(rng))};
+        const auto exp{static_cast<uint8_t>(distribution(rng))};
         const auto str{std::to_string(num) + "e" + std::to_string((exp))};
 
         BigInt n{str};
