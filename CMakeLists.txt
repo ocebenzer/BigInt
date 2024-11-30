@@ -4,14 +4,7 @@ project(bigint)
 set(CMAKE_CXX_STANDARD 20)
 set(CXX_STANDARD_REQUIRED ON)
 
-find_package(doctest)
-if (NOT doctest_FOUND)
-    include_directories(${DOCTEST_PATH})
-endif()
-
 include_directories(include)
-
-add_library(utils src/utils.cpp)
 
 add_library(bigint
     src/bigint/addition.cpp
@@ -22,7 +15,8 @@ add_library(bigint
     src/bigint/logical.cpp
     src/bigint/stream.cpp
     src/bigint/misc.cpp
-    src/bigint/bigint.cpp)
+    src/bigint/bigint.cpp
+    src/utils.cpp)
 
 add_executable(bigint_tests
     tests/constructor.cpp
@@ -35,6 +29,6 @@ add_executable(bigint_tests
     tests/stream.cpp
     tests/main.cpp)
 
-target_link_libraries(bigint_tests PRIVATE bigint utils)
+target_link_libraries(bigint_tests PRIVATE bigint)
 
 add_compile_options(-Wall -Wextra -Wconversion -pedantic -Wfatal-errors)

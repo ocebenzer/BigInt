@@ -1,4 +1,7 @@
 .cache/
 build/
+cmake-build-debug/
 
 .vs/
+.idea/
+.vscode/
