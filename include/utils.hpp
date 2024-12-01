@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <cstdint>
 
@@ -24,23 +26,28 @@ void trim_zeros (std::string&);
 /**
  * add two number-strings
  */
-std::string add (const std::string_view, const std::string_view);
+std::string add (std::string_view, std::string_view);
 
 /**
  * subtract two number-strings
  */
-std::string sub (const std::string_view, const std::string_view);
+std::string sub (std::string_view, std::string_view);
 
 
 /**
  * divide two number-strings
  * @returns [quotient, remainder]
  */
-std::pair<std::string, std::string> divide (const std::string_view, const std::string_view);
+std::pair<std::string, std::string> divide (std::string_view, std::string_view);
 
 /**
  * compare two number-strings
  */
-bool is_less_than (const std::string_view, const std::string_view);
+bool is_less_than (std::string_view, std::string_view);
+
+/**
+ * find 2 ^ n
+ */
+BigInt find_pow_of_2(const BigInt&);
 
 } // namespace ocb

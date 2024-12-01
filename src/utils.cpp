@@ -1,3 +1,4 @@
+#include "bigint.hpp"
 #include "utils.hpp"
 
 #include <cassert>
@@ -7,8 +8,7 @@
 namespace ocb {
 
 void trim_zeros (std::string& s) {
-    const auto first_not_zero{s.find_first_not_of('0')};
-    switch (first_not_zero) {
+    switch (const auto first_not_zero{s.find_first_not_of('0')}) {
         case 0:
             break;
         case std::string::npos:
@@ -20,8 +20,11 @@ void trim_zeros (std::string& s) {
     }
 }
 
-negativity calculate_negativity(bool v1, bool v2) {
-    return static_cast<negativity>(v1 << 1 | v2);
+negativity calculate_negativity(const bool v1, const bool v2) {
+    uint8_t value{0};
+    if (v1) value += 0b10;
+    if (v2) value += 0b01;
+    return static_cast<negativity>(value);
 }
 
 
@@ -37,7 +40,7 @@ std::string add (const std::string_view s1, const std::string_view s2){
     auto itr1{final_value.rbegin()};
     auto itr2{added_value.rbegin()};
 
-    int remainder{0};
+    auto remainder{'\0'};
     for (; itr2 < added_value.rend(); ++itr1, ++itr2) {
         remainder += *itr1 - '0' + *itr2 - '0';
         *itr1 = remainder % 10 + '0';
@@ -167,6 +170,23 @@ bool is_less_than (const std::string_view s1, const std::string_view s2) {
         }
     }
     return s1.size() < s2.size();
+}
+
+BigInt find_pow_of_2(const BigInt& pow) {
+    if (pow < 64) {
+        int64_t ll;
+        std::stringstream ss{pow.to_string()};
+        ss >> ll;
+        return BigInt{ll};
+    }
+
+    const auto half_pow{find_pow_of_2(pow/2)};
+
+    if (pow % 2 == 0) {
+        return half_pow * half_pow;
+    }
+
+    return half_pow * half_pow * 2;
 }
 
 } // namespace ocb

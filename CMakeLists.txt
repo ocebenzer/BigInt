@@ -7,16 +7,16 @@ set(CXX_STANDARD_REQUIRED ON)
 include_directories(include)
 
 add_library(bigint
-    src/bigint/addition.cpp
-    src/bigint/subtraction.cpp
-    src/bigint/multiplication.cpp
-    src/bigint/division.cpp
-    src/bigint/modulo.cpp
-    src/bigint/logical.cpp
+    src/bigint/bigint.cpp
+    src/bigint/unary.cpp
+    src/bigint/arithmetic.cpp
+    src/bigint/arithmetic-overrides.cpp
+    src/bigint/bitwise-arithmetic-operators.cpp
+    src/bigint/comparison.cpp
     src/bigint/stream.cpp
     src/bigint/misc.cpp
-    src/bigint/bigint.cpp
-    src/utils.cpp)
+    src/utils.cpp
+)
 
 add_executable(bigint_tests
     tests/constructor.cpp
@@ -25,9 +25,10 @@ add_executable(bigint_tests
     tests/multiplication.cpp
     tests/division.cpp
     tests/modulo.cpp
-    tests/logical.cpp
+    tests/comparison.cpp
     tests/stream.cpp
-    tests/main.cpp)
+    tests/main.cpp
+)
 
 target_link_libraries(bigint_tests PRIVATE bigint)
 

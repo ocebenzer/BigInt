@@ -41,17 +41,17 @@ TEST_CASE("Negative Addition") {
     BigInt i{36};
 
     i += -16;
-    CHECK_EQ(i.get(), "20");
+    CHECK_EQ(i.to_string(), "20");
     CHECK_EQ(i.get_value(), "20");
     CHECK_EQ(i.get_negative(), false);
 
     auto res{i + -100};
-    CHECK_EQ(res.get(), "-80");
+    CHECK_EQ(res.to_string(), "-80");
     CHECK_EQ(res.get_value(), "80");
     CHECK_EQ(res.get_negative(), true);
 
     res = -1000 + res;
-    CHECK_EQ(res.get(), "-1080");
+    CHECK_EQ(res.to_string(), "-1080");
     CHECK_EQ(res.get_value(), "1080");
     CHECK_EQ(res.get_negative(), true);
 }
@@ -70,6 +70,6 @@ TEST_CASE("Random Generation") {
         BigInt big_sum{big1 + big2};
         CHECK_EQ(big_sum, sum);
         CHECK_EQ(big_sum.get_negative(), sum < 0);
-        CHECK_EQ(big_sum.get(), std::to_string(sum));
+        CHECK_EQ(big_sum.to_string(), std::to_string(sum));
     }
 }

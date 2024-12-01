@@ -1,61 +1,108 @@
 #pragma once
 
-#include <istream>
 #include <ostream>
 #include <string>
-#include <string_view>
+#include <cstdint>
 
 namespace ocb {
 
 class BigInt {
-private:
-    bool is_negative;
+    bool is_negative{};
     std::string value;
 
 public:
-    static BigInt factorial(int);
+    static BigInt factorial(int64_t);
+
+    // Constructors
 
     BigInt(const std::string& = "0");
-    BigInt(std::string&&);
-    BigInt(const long long);
+    BigInt(int64_t);
 
-    const std::string_view get_value() const;
-    const bool& get_negative() const;
-    std::string get() const;
+    [[nodiscard]] bool get_negative() const;
+    void set_negative(bool);
+    [[nodiscard]] std::string_view get_value() const;
     void set_value(std::string&&);
-    void set_negative(const bool);
-    void set(std::string&&);
-    void set(int number);
 
-    bool is_greater_than_int64_max() const;
+    [[nodiscard]] std::string to_string() const;
+
+    void set(std::string&&);
+    void set(int64_t number);
+
+
+    // Unary operators
 
     BigInt operator+ () const;
     BigInt operator- () const;
+    BigInt& operator-- ();
+    BigInt operator-- (int);
+    BigInt& operator++ ();
+    BigInt operator++ (int);
+
+
+    // Binary Arithmetic Operators
+
     BigInt& operator+= (const BigInt&);
     BigInt& operator-= (const BigInt&);
     BigInt& operator*= (const BigInt&);
     BigInt& operator/= (const BigInt&);
     BigInt& operator%= (const BigInt&);
-    BigInt& operator++ ();
-    BigInt& operator-- ();
-    BigInt operator++ (int);
-    BigInt operator-- (int);
-    friend BigInt operator+ (BigInt, const BigInt&);
-    friend BigInt operator- (BigInt, const BigInt&);
-    friend BigInt operator* (BigInt, const BigInt&);
-    friend BigInt operator/ (BigInt, const BigInt&);
-    friend BigInt operator% (BigInt, const BigInt&);
-    friend BigInt operator<< (BigInt, const BigInt&);
-    friend BigInt operator>> (BigInt, const BigInt&);
-    friend bool operator< (const BigInt&, const BigInt&);
-    friend bool operator> (const BigInt&, const BigInt&);
-    friend bool operator<= (const BigInt&, const BigInt&);
-    friend bool operator>= (const BigInt&, const BigInt&);
-    friend bool operator== (const BigInt&, const BigInt&);
-    friend bool operator!= (const BigInt&, const BigInt&);
+
+
+    // Binary Arithmetic Operator Overrides
+
+    BigInt& operator+= (int64_t);
+    BigInt& operator-= (int64_t);
+    BigInt& operator*= (int64_t);
+    BigInt& operator/= (int64_t);
+    BigInt& operator%= (int64_t);
+    BigInt operator+ (const BigInt&) const;
+    BigInt operator- (const BigInt&) const;
+    BigInt operator* (const BigInt&) const;
+    BigInt operator/ (const BigInt&) const;
+    BigInt operator% (const BigInt&) const;
+    BigInt operator+ (int64_t) const;
+    BigInt operator- (int64_t) const;
+    BigInt operator* (int64_t) const;
+    BigInt operator/ (int64_t) const;
+    BigInt operator% (int64_t) const;
+    bool operator< (const BigInt&) const;
+    bool operator> (const BigInt&) const;
+    bool operator<= (const BigInt&) const;
+    bool operator>= (const BigInt&) const;
+    bool operator== (const BigInt&) const;
+    bool operator!= (const BigInt&) const;
+    bool operator< (int64_t) const;
+    bool operator> (int64_t) const;
+    bool operator<= (int64_t) const;
+    bool operator>= (int64_t) const;
+    bool operator== (int64_t) const;
+    bool operator!= (int64_t) const;
+    friend BigInt operator+= (int64_t, const BigInt&);
+    friend BigInt operator-= (int64_t, const BigInt&);
+    friend BigInt operator*= (int64_t, const BigInt&);
+    friend BigInt operator/= (int64_t, const BigInt&);
+    friend BigInt operator%= (int64_t, const BigInt&);
+    friend BigInt operator+ (int64_t, const BigInt&);
+    friend BigInt operator- (int64_t, const BigInt&);
+    friend BigInt operator* (int64_t, const BigInt&);
+    friend BigInt operator/ (int64_t, const BigInt&);
+    friend BigInt operator% (int64_t, const BigInt&);
+
+
+    // Stream operators
+
+    friend std::ostream& operator<< (std::ostream&, const BigInt&);
+    friend std::istream& operator>> (std::istream&, BigInt&);
+
+
+    // Misc
+
+    [[nodiscard]] bool is_greater_than_int64_max() const;
+    friend BigInt operator<< (const BigInt&, const BigInt&);
+    friend BigInt operator>> (const BigInt&, const BigInt&);
+    friend BigInt operator<< (const BigInt&, int);
+    friend BigInt operator>> (const BigInt&, int);
 };
 
-std::ostream& operator<< (std::ostream&, const BigInt&);
-std::istream& operator>> (std::istream&, BigInt&);
 
 } // namespace ocb

@@ -5,37 +5,34 @@
 
 namespace ocb {
 
-BigInt::BigInt(const std::string& number) {
+BigInt::BigInt(const std::string& number) : is_negative{} {
     this->set(std::string{number});
-};
-
-BigInt::BigInt(std::string&& number) {
-    this->set(std::move(number));
-};
-
-BigInt::BigInt(const long long number) : BigInt(std::to_string(number)) { };
-
-const std::string_view BigInt::get_value() const {
-    return std::string_view(this->value);
 }
 
-const bool& BigInt::get_negative() const {
-    return this->is_negative;
-}
+BigInt::BigInt(const long long number) : BigInt(std::to_string(number)) { }
 
-std::string BigInt::get() const {
-    if (this->get_negative()) {
-        return "-" + this->value;
+std::string BigInt::to_string() const {
+    if (is_negative) {
+        return "-" + value;
     }
-    return std::string(this->get_value());
+    return value;
 }
+
+std::string_view BigInt::get_value() const {
+    return std::string_view{value};
+}
+
 
 void BigInt::set_value(std::string&& number) {
     value = std::move(number);
 }
 
+bool BigInt::get_negative() const {
+    return is_negative;
+}
+
 void BigInt::set_negative(const bool val) {
-    this->is_negative = val;
+    is_negative = val;
 }
 
 void BigInt::set(std::string&& number) {
@@ -45,11 +42,9 @@ void BigInt::set(std::string&& number) {
         throw std::invalid_argument(number);
     }
 
-    this->set_negative(matches[1] == "-");
+    set_negative(matches[1] == "-");
 
-    std::string new_value;
-
-    new_value = matches[2].str();
+    std::string new_value = matches[2].str();
 
     if (matches[3].matched) {
         const auto n{std::stoll(matches[4].str())};
@@ -69,7 +64,7 @@ void BigInt::set(std::string&& number) {
     this->set_value(std::move(new_value));
 }
 
-void BigInt::set(int number) {
+void BigInt::set(const int64_t number) {
     this->set(std::to_string(number));
 }
 

@@ -14,7 +14,7 @@ TEST_CASE("Simple Constructor") {
     BigInt n{"e0"};
     CHECK_EQ(n.get_value(), "0");
     CHECK_EQ(n.get_negative(), false);
-    CHECK_EQ(n.get(), "0");
+    CHECK_EQ(n.to_string(), "0");
 }
 TEST_CASE("Random Constructor Generation") {
     std::mt19937_64 rng;
@@ -27,7 +27,7 @@ TEST_CASE("Random Constructor Generation") {
         BigInt n{str};
         CHECK_EQ(n.get_value(), std::to_string(std::llabs(num)));
         CHECK_EQ(n.get_negative(), num < 0);
-        CHECK_EQ(n.get(), str);
+        CHECK_EQ(n.to_string(), str);
     }
 
     for (int i{0}; i < 10; ++i) {
@@ -37,7 +37,7 @@ TEST_CASE("Random Constructor Generation") {
         const auto str{std::to_string(num) + "e" + std::to_string((exp))};
 
         BigInt n{str};
-        const std::string n_get{n.get()};
+        const std::string n_get{n.to_string()};
         const std::string n_get_value{n.get_value()};
 
         CHECK_EQ(n_get_value.substr(0, num_str.size()), num_str);
