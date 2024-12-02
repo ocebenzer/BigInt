@@ -16,7 +16,7 @@ public:
     // Constructors
 
     BigInt(const std::string& = "0");
-    BigInt(int64_t);
+    BigInt(int64_t number);
 
     [[nodiscard]] bool get_negative() const;
     void set_negative(bool);
