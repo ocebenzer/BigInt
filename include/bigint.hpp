@@ -106,3 +106,10 @@ public:
 
 
 } // namespace ocb
+
+template <>
+struct std::hash<ocb::BigInt> {
+    std::size_t operator()(const ocb::BigInt& num) const noexcept {
+        return std::hash<std::string>()(num.to_string());
+    }
+};
