@@ -40,16 +40,16 @@ std::string add (const std::string_view s1, const std::string_view s2){
     auto itr1{final_value.rbegin()};
     auto itr2{added_value.rbegin()};
 
-    auto remainder{'\0'};
+    auto remainder{0};
     for (; itr2 < added_value.rend(); ++itr1, ++itr2) {
         remainder += *itr1 - '0' + *itr2 - '0';
-        *itr1 = remainder % 10 + '0';
+        *itr1 = static_cast<char>(remainder % 10 + '0');
         remainder /= 10;
     }
 
     for (; itr1 < final_value.rend(); ++itr1) {
         remainder += *itr1 - '0';
-        *itr1 = remainder % 10 + '0';
+        *itr1 = static_cast<char>(remainder % 10 + '0');
         remainder /= 10;
     }
 
@@ -66,27 +66,26 @@ std::string sub (const std::string_view s1, const std::string_view s2) {
     std::string final_value{s1};
 
     auto itr1{final_value.rbegin()};
-    auto itr2{s2.rbegin()};
-
-    int borrow{0};
+    auto borrow{0};
     bool borrowed{false};
-    for (; itr2 < s2.rend(); ++itr1, ++itr2) {
-        borrow = *itr1 - *itr2 + borrow;
+
+    for (auto itr2{s2.rbegin()}; itr2 < s2.rend(); ++itr1, ++itr2) {
+        borrow += *itr1 - *itr2;
         borrowed = borrow < 0;
         if (borrowed) {
             borrow += 10;
         }
-        *itr1 = borrow % 10 + '0';
+        *itr1 = static_cast<char>(borrow % 10 + '0');
         borrow = borrowed ? -1 : 0;
     }
 
     for (; itr1 < final_value.rend(); ++itr1) {
-        borrow = *itr1 - '0' + borrow;
+        borrow += *itr1 - '0';
         borrowed = borrow < 0;
         if (borrowed) {
             borrow += 10;
         }
-        *itr1 = borrow % 10 + '0';
+        *itr1 = static_cast<char>(borrow % 10 + '0');
         borrow = borrowed ? -1 : 0;
     }
 
@@ -154,7 +153,7 @@ std::pair<std::string, std::string> divide (const std::string_view s1, const std
             }
         }
         else {
-            quotient << static_cast<char>('0');
+            quotient << '0';
         }
     }
 
@@ -162,13 +161,7 @@ std::pair<std::string, std::string> divide (const std::string_view s1, const std
 }
 
 bool is_less_than (const std::string_view s1, const std::string_view s2) {
-    if (s1.size() == s2.size()) {
-        for (auto itr1{s1.begin()}, itr2{s2.begin()}; itr1 < s1.end(); itr1++, itr2++) {
-            if (*itr1 != *itr2) {
-                return *itr1 < *itr2;
-            }
-        }
-    }
+    if (s1.size() == s2.size()) return s1 < s2;
     return s1.size() < s2.size();
 }
 

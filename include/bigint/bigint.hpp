@@ -26,7 +26,7 @@ public:
     [[nodiscard]] std::string to_string() const;
 
     void set(std::string&&);
-    void set(int64_t number);
+    void set(int64_t);
 
 
     // Unary operators
