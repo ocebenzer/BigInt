@@ -1,5 +1,5 @@
-#include <bigint.hpp>
-#include <utils.hpp>
+#include <bigint/bigint.hpp>
+#include <bigint/utils.hpp>
 
 /*
  * https://en.cppreference.com/w/cpp/language/operators#Bitwise_arithmetic_operators

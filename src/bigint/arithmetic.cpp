@@ -1,5 +1,5 @@
-#include "bigint.hpp"
-#include "utils.hpp"
+#include "bigint/bigint.hpp"
+#include "bigint/utils.hpp"
 
 #include <stdexcept>
 #include <vector>

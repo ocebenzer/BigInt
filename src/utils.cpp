@@ -1,5 +1,5 @@
-#include "bigint.hpp"
-#include "utils.hpp"
+#include "bigint/bigint.hpp"
+#include "bigint/utils.hpp"
 
 #include <cassert>
 #include <sstream>
@@ -170,23 +170,6 @@ bool is_less_than (const std::string_view s1, const std::string_view s2) {
         }
     }
     return s1.size() < s2.size();
-}
-
-BigInt find_pow_of_2(const BigInt& pow) {
-    if (pow < 64) {
-        int64_t ll;
-        std::stringstream ss{pow.to_string()};
-        ss >> ll;
-        return BigInt{ll};
-    }
-
-    const auto half_pow{find_pow_of_2(pow/2)};
-
-    if (pow % 2 == 0) {
-        return half_pow * half_pow;
-    }
-
-    return half_pow * half_pow * 2;
 }
 
 } // namespace ocb
