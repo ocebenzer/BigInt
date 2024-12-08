@@ -3,6 +3,7 @@
 #include "bigint/bigint.hpp"
 
 #include <random>
+#include <algorithm>
 
 using ocb::BigInt;
 
@@ -41,14 +42,9 @@ TEST_CASE("Random Constructor Generation") {
         const std::string n_get_value{n.get_value()};
 
         CHECK_EQ(n_get_value.substr(0, num_str.size()), num_str);
-        CHECK([&num_str, &n_get_value] () {
+        CHECK([&num_str, &n_get_value] {
             const auto& zeros{n_get_value.substr(num_str.size())};
-            for (const char c : zeros) {
-                if (c != '0') {
-                    return false;
-                }
-            }
-            return true;
+            return std::ranges::all_of(zeros, [] (const auto& c) { return c == '0'; });
         }());
 
         CHECK_EQ(n.get_negative(), num < 0);

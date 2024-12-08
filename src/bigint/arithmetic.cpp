@@ -72,7 +72,7 @@ BigInt& BigInt::operator*= (const BigInt& rhs) {
         for (auto itr1{partial_value.rbegin()}; itr1 < partial_value.rend(); ++itr1) {
             const auto d1{*itr1 - '0'};
             remainder = d1 * d2 + remainder;
-            *itr1 = remainder % 10 + '0';
+            *itr1 = static_cast<char>(remainder % 10 + '0');
             remainder /= 10;
         }
         partial_values.push_back(std::to_string(remainder) + partial_value + std::string(padding, '0'));
