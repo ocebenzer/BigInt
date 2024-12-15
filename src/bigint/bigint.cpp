@@ -9,6 +9,8 @@ BigInt::BigInt(const std::string& number) : is_negative{} {
     this->set(std::string{number});
 }
 
+BigInt::BigInt(const std::string_view number) : BigInt(std::string{number}) { }
+
 BigInt::BigInt(const int64_t number) : BigInt(std::to_string(number)) { }
 
 std::string BigInt::to_string() const {
