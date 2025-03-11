@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.5.0)
-project(bigint)
+project(BigInt)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CXX_STANDARD_REQUIRED ON)
 
 include_directories(include)
 
-add_library(bigint
+add_library(BigInt
     src/bigint/bigint.cpp
     src/bigint/unary.cpp
     src/bigint/arithmetic.cpp
@@ -30,6 +30,6 @@ add_executable(bigint_tests
     tests/main.cpp
 )
 
-target_link_libraries(bigint_tests PRIVATE bigint)
+target_link_libraries(bigint_tests BigInt)
 
 add_compile_options(-Wall -Wextra -Wconversion -pedantic -Wfatal-errors)
