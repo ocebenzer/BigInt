@@ -48,6 +48,6 @@ bool is_less_than (std::string_view, std::string_view);
 /**
  * find 2 ^ n
  */
-BigInt find_pow_of_2(const BigInt&);
+BigInt find_pow_of_2 (const auto &pow);
 
 } // namespace ocb

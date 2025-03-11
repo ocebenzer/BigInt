@@ -1,7 +1,7 @@
 #include "doctest/doctest.h"
 
-#include "bigint/bigint.hpp"
-#include "bigint/tests.hpp"
+#include "ocb/bigint.hpp"
+#include "ocb/bigint/tests.hpp"
 
 #include <random>
 

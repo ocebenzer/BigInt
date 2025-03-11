@@ -1,6 +1,6 @@
 #include "doctest/doctest.h"
 
-#include "bigint/bigint.hpp"
+#include "ocb/bigint.hpp"
 
 #include <cstdint>
 #include <random>
