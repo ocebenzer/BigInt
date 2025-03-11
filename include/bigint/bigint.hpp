@@ -17,8 +17,6 @@ namespace ocb {
 
         BigInt(const std::string & = "0");
 
-        BigInt(const std::string_view);
-
         BigInt(int64_t number);
 
         [[nodiscard]] bool get_negative() const;
