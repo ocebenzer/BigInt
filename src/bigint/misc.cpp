@@ -1,13 +1,46 @@
-#include "ocb/bigint.hpp"
 #include <cstdint>
+#include <unordered_map>
+#include "ocb/bigint.hpp"
 
 namespace ocb {
 
 BigInt BigInt::factorial(const int64_t n) {
-    if (n < 2) {
-       return BigInt{1};
+    static std::unordered_map<int64_t, BigInt> history;
+
+    if (history.contains(n)) {
+        return history[n];
     }
-    return n * factorial(n - 1);
+
+    if (n < 2) {
+        constexpr auto value = 1;
+        history[n] = value;
+        return value;
+    }
+
+    const auto value = n * factorial(n - 1);
+    history[n] = value;
+    return value;
+}
+
+BigInt BigInt::fibonacci(const uint64_t n) {
+    static std::unordered_map<uint64_t, BigInt> history;
+
+    if (history.contains(n)) {
+        return history[n];
+    }
+
+    if (n < 3) {
+        constexpr auto value = 1;
+        history[n] = value;
+        return value;
+    }
+
+    const auto n1 = fibonacci(n-1);
+    const auto n2 = fibonacci(n-2);
+
+    const auto value = n1 + n2;
+    history[n] = value;
+    return value;
 }
 
 bool BigInt::is_greater_than_int64_max() const {

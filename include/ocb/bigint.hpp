@@ -12,6 +12,7 @@ namespace ocb {
 
     public:
         static BigInt factorial(int64_t);
+        static BigInt fibonacci(uint64_t);
 
         // Constructors
 

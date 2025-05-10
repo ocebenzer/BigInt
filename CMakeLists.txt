@@ -28,8 +28,11 @@ add_executable(bigint_tests
     tests/comparison.cpp
     tests/stream.cpp
     tests/main.cpp
+    tests/misc.cpp
 )
 
 target_link_libraries(bigint_tests BigInt)
 
 add_compile_options(-Wall -Wextra -Wconversion -pedantic -Wfatal-errors)
+
+install(TARGETS BigInt)
