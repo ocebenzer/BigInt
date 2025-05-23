@@ -3,7 +3,6 @@
 #include <ostream>
 #include <string>
 #include <string_view>
-#include <cstdint>
 
 namespace ocb {
     class BigInt {
@@ -11,149 +10,98 @@ namespace ocb {
         std::string value;
 
     public:
-        explicit BigInt(const std::string & = "0");
-
-        BigInt(int64_t);
+        BigInt(long long int);
+        BigInt(const std::string& = "0");
+        BigInt(std::string&&);
 
         [[nodiscard]] bool get_negative() const;
-
         void set_negative(bool);
-
         [[nodiscard]] std::string_view get_value() const;
-
         void set_value(std::string &&);
-
         [[nodiscard]] std::string to_string() const;
-
         void set(std::string &&);
-
-        void set(int64_t);
-
 
         // Unary operators
 
         BigInt operator+() const;
-
         BigInt operator-() const;
-
         BigInt &operator--();
-
         BigInt operator--(int);
-
         BigInt &operator++();
-
         BigInt operator++(int);
-
 
         // Binary Arithmetic Operators
 
         BigInt &operator+=(const BigInt &);
-
         BigInt &operator-=(const BigInt &);
-
         BigInt &operator*=(const BigInt &);
-
         BigInt &operator/=(const BigInt &);
-
         BigInt &operator%=(const BigInt &);
 
 
         // Binary Arithmetic Operator Overrides
 
-        BigInt &operator+=(int64_t);
-
-        BigInt &operator-=(int64_t);
-
-        BigInt &operator*=(int64_t);
-
-        BigInt &operator/=(int64_t);
-
-        BigInt &operator%=(int64_t);
+        BigInt &operator+=(long long int);
+        BigInt &operator-=(long long int);
+        BigInt &operator*=(long long int);
+        BigInt &operator/=(long long int);
+        BigInt &operator%=(long long int);
 
         BigInt operator+(const BigInt &) const;
-
         BigInt operator-(const BigInt &) const;
-
         BigInt operator*(const BigInt &) const;
-
         BigInt operator/(const BigInt &) const;
-
         BigInt operator%(const BigInt &) const;
 
-        BigInt operator+(int64_t) const;
-
-        BigInt operator-(int64_t) const;
-
-        BigInt operator*(int64_t) const;
-
-        BigInt operator/(int64_t) const;
-
-        BigInt operator%(int64_t) const;
+        BigInt operator+(long long int) const;
+        BigInt operator-(long long int) const;
+        BigInt operator*(long long int) const;
+        BigInt operator/(long long int) const;
+        BigInt operator%(long long int) const;
 
         bool operator<(const BigInt &) const;
-
         bool operator>(const BigInt &) const;
-
         bool operator<=(const BigInt &) const;
-
         bool operator>=(const BigInt &) const;
-
         bool operator==(const BigInt &) const;
-
         bool operator!=(const BigInt &) const;
 
-        bool operator<(int64_t) const;
+        bool operator<(long long int) const;
+        bool operator>(long long int) const;
+        bool operator<=(long long int) const;
+        bool operator>=(long long int) const;
+        bool operator==(long long int) const;
+        bool operator!=(long long int) const;
 
-        bool operator>(int64_t) const;
-
-        bool operator<=(int64_t) const;
-
-        bool operator>=(int64_t) const;
-
-        bool operator==(int64_t) const;
-
-        bool operator!=(int64_t) const;
-
-        friend BigInt operator+=(int64_t, const BigInt &);
-
-        friend BigInt operator-=(int64_t, const BigInt &);
-
-        friend BigInt operator*=(int64_t, const BigInt &);
-
-        friend BigInt operator/=(int64_t, const BigInt &);
-
-        friend BigInt operator%=(int64_t, const BigInt &);
-
-        friend BigInt operator+(int64_t, const BigInt &);
-
-        friend BigInt operator-(int64_t, const BigInt &);
-
-        friend BigInt operator*(int64_t, const BigInt &);
-
-        friend BigInt operator/(int64_t, const BigInt &);
-
-        friend BigInt operator%(int64_t, const BigInt &);
-
+        friend BigInt operator+=(long long int, const BigInt &);
+        friend BigInt operator-=(long long int, const BigInt &);
+        friend BigInt operator*=(long long int, const BigInt &);
+        friend BigInt operator/=(long long int, const BigInt &);
+        friend BigInt operator%=(long long int, const BigInt &);
+        friend BigInt operator+(long long int, const BigInt &);
+        friend BigInt operator-(long long int, const BigInt &);
+        friend BigInt operator*(long long int, const BigInt &);
+        friend BigInt operator/(long long int, const BigInt &);
+        friend BigInt operator%(long long int, const BigInt &);
 
         // Stream operators
 
         friend std::ostream &operator<<(std::ostream &, const BigInt &);
-
         friend std::istream &operator>>(std::istream &, BigInt &);
-
 
         // Misc
 
         [[nodiscard]] bool is_greater_than_int64_max() const;
-
         friend BigInt operator<<(const BigInt &, const BigInt &);
-
         friend BigInt operator>>(const BigInt &, const BigInt &);
+        friend BigInt operator<<(const BigInt &, long long int);
+        friend BigInt operator>>(const BigInt &, long long int);
+    };
 
-        friend BigInt operator<<(const BigInt &, int);
+    BigInt operator""_BigInt (unsigned long long);
 
-    BigInt factorial(uint64_t);
-    BigInt fibonacci(uint64_t);
+    BigInt factorial(unsigned long long int);
+    BigInt fibonacci(unsigned long long int);
 } // namespace ocb
 
 template<>

@@ -32,11 +32,11 @@ bool BigInt::operator== (const BigInt& rhs) const {
 }
 bool BigInt::operator!= (const BigInt& rhs) const { return !(*this == rhs); }
 
-bool BigInt::operator< (const int64_t rhs) const { return *this < BigInt{rhs}; }
-bool BigInt::operator> (const int64_t rhs) const { return *this > BigInt{rhs}; }
-bool BigInt::operator<= (const int64_t rhs) const { return *this <= BigInt{rhs}; }
-bool BigInt::operator>= (const int64_t rhs) const { return *this >= BigInt{rhs}; }
-bool BigInt::operator== (const int64_t rhs) const { return *this == BigInt{rhs}; }
-bool BigInt::operator!= (const int64_t rhs) const { return *this != BigInt{rhs}; }
+bool BigInt::operator< (const long long int rhs) const { return *this < BigInt{rhs}; }
+bool BigInt::operator> (const long long int rhs) const { return *this > BigInt{rhs}; }
+bool BigInt::operator<= (const long long int rhs) const { return *this <= BigInt{rhs}; }
+bool BigInt::operator>= (const long long int rhs) const { return *this >= BigInt{rhs}; }
+bool BigInt::operator== (const long long int rhs) const { return *this == BigInt{rhs}; }
+bool BigInt::operator!= (const long long int rhs) const { return *this != BigInt{rhs}; }
 
 } // namespace ocb

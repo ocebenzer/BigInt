@@ -42,13 +42,13 @@ TEST_CASE("Negative Modulo") {
 
 TEST_CASE("Random Generation") {
     std::mt19937_64 rng;
-    std::uniform_int_distribution<int64_t> distribution;
+    std::uniform_int_distribution<long long int> distribution;
 
     for (int i{0}; i < NUM_GENERATIONAL_TESTS; ++i) {
-        const int64_t n1{distribution(rng)};
-        const int64_t n2{static_cast<int32_t>(distribution(rng))};
+        const long long int n1{distribution(rng)};
+        const long long int n2{static_cast<int32_t>(distribution(rng))};
         if (n2 == 0) continue;
-        const int64_t mod{n1 % n2};
+        const long long int mod{n1 % n2};
 
         BigInt big1{n1};
         BigInt big2{n2};

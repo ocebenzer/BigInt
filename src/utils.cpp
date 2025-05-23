@@ -168,7 +168,7 @@ bool is_less_than (const std::string_view s1, const std::string_view s2) {
 BigInt find_pow_of_2 (const auto &pow) {
     const auto find_pow_of_2_impl = [](const auto &pow, const auto &find_pow_of_2_ref) {
         if (pow < 64) {
-            int64_t ll;
+            long long int ll;
             std::stringstream ss{pow.to_string()};
             ss >> ll;
             return BigInt{ll};

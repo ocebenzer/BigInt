@@ -4,6 +4,20 @@
 
 using ocb::BigInt;
 
+TEST_CASE("UDL") {
+    using namespace ocb;
+
+    const auto p = 144_BigInt;
+    CHECK_EQ(p.get_value(), "144");
+    CHECK_EQ(p.get_negative(), false);
+
+    const auto n = -144_BigInt;
+    CHECK_EQ(n.get_value(), "144");
+    CHECK_EQ(n.get_negative(), true);
+
+    CHECK_EQ(p.get_value(), n.get_value());
+}
+
 TEST_CASE("Factorial") {
     CHECK_EQ(ocb::factorial(0), 1);
     CHECK_EQ(ocb::factorial(1), 1);

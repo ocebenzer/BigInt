@@ -55,9 +55,9 @@ TEST_CASE("Random Generation") {
     std::uniform_int_distribution<int32_t> distribution;
 
     for (int i{0}; i < NUM_GENERATIONAL_TESTS; ++i) {
-        const int64_t n1{distribution(rng)};
-        const int64_t n2{distribution(rng)};
-        const int64_t mul{n1 * n2};
+        const long long int n1{distribution(rng)};
+        const long long int n2{distribution(rng)};
+        const long long int mul{n1 * n2};
 
         BigInt big1{n1};
         BigInt big2{n2};

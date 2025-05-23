@@ -3,9 +3,10 @@
 #include "ocb/bigint.hpp"
 
 namespace ocb {
+BigInt operator""_BigInt (const unsigned long long t) { return BigInt{std::to_string(t)}; }
 
 BigInt factorial(const uint64_t n) {
-    static std::unordered_map<int64_t, BigInt> history;
+    static std::unordered_map<long long int, BigInt> history;
 
     if (history.contains(n)) {
         return history[n];

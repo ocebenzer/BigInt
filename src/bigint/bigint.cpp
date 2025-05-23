@@ -4,12 +4,9 @@
 #include <regex>
 
 namespace ocb {
-
-BigInt::BigInt(const std::string& number) : is_negative{} {
-    this->set(std::string{number});
-}
-
-BigInt::BigInt(const int64_t number) : BigInt(std::to_string(number)) { }
+BigInt::BigInt(const long long int number)  { this->set(std::to_string(number)); }
+BigInt::BigInt(const std::string& number)   { this->set(std::string{number}); }
+BigInt::BigInt(std::string&& number)   { this->set(std::move(number)); }
 
 std::string BigInt::to_string() const {
     if (is_negative) {
@@ -36,7 +33,7 @@ void BigInt::set_negative(const bool val) {
 }
 
 void BigInt::set(std::string&& number) {
-    const std::regex regex{"([+-])?0*(\\d*)([eE][+]?(\\d+))?"};
+    static const std::regex regex{"([+-])?0*(\\d*)([eE][+]?(\\d+))?"};
     std::smatch matches;
     if (!std::regex_match(number, matches, regex)) {
         throw std::invalid_argument(number);
@@ -62,10 +59,6 @@ void BigInt::set(std::string&& number) {
     }
 
     this->set_value(std::move(new_value));
-}
-
-void BigInt::set(const int64_t number) {
-    this->set(std::to_string(number));
 }
 
 } // namespace ocb
