@@ -114,22 +114,22 @@ std::pair<std::string, std::string> divide (const std::string_view s1, const std
         }
     }
 
-    std::string divident{s1};
+    std::string dividend{s1};
     std::stringstream quotient;
 
-    for (; end_index <= divident.size(); ++end_index) {
-        const std::string_view partial_divident{divident.begin()+start_index, divident.begin()+end_index};
+    for (; end_index <= dividend.size(); ++end_index) {
+        const std::string_view partial_dividend{dividend.begin()+start_index, dividend.begin()+end_index};
 
-        if (!is_less_than(partial_divident, s2)) {
+        if (!is_less_than(partial_dividend, s2)) {
             std::string partial_divisor{s2};
             int partial_quotient{1};
 
-            while (is_less_than(partial_divisor, partial_divident)) {
+            while (is_less_than(partial_divisor, partial_dividend)) {
                 partial_divisor = add(partial_divisor, s2);
                 ++partial_quotient;
             }
             // if remainder, undo last addition
-            if (is_less_than(partial_divident, partial_divisor)) {
+            if (is_less_than(partial_dividend, partial_divisor)) {
                 partial_divisor = sub(partial_divisor, s2);
                 trim_zeros(partial_divisor);
                 --partial_quotient;
@@ -137,17 +137,17 @@ std::pair<std::string, std::string> divide (const std::string_view s1, const std
             quotient << static_cast<char>(partial_quotient + '0');
 
             {
-                const std::string padding(divident.size()-end_index, '0');
+                const std::string padding(dividend.size()-end_index, '0');
                 const std::string padded_partial_divisor{partial_divisor + padding};
 
-                if (divident == padded_partial_divisor) {
+                if (dividend == padded_partial_divisor) {
                     quotient << padding;
-                    divident = "0";
+                    dividend = "0";
                     break;
                 }
 
-                divident = sub(divident, padded_partial_divisor);
-                while (divident[start_index] == '0') {
+                dividend = sub(dividend, padded_partial_divisor);
+                while (dividend[start_index] == '0') {
                     ++start_index;
                 }
             }
@@ -157,7 +157,7 @@ std::pair<std::string, std::string> divide (const std::string_view s1, const std
         }
     }
 
-    return {quotient.str(), divident};
+    return {quotient.str(), dividend};
 }
 
 bool is_less_than (const std::string_view s1, const std::string_view s2) {
@@ -184,5 +184,5 @@ BigInt find_pow_of_2 (const auto &pow) {
     };
 
     return find_pow_of_2_impl(pow, find_pow_of_2_impl);
-};
+}
 } // namespace ocb
