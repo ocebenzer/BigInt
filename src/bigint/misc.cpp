@@ -3,49 +3,49 @@
 #include "ocb/bigint.hpp"
 
 namespace ocb {
-BigInt operator""_BigInt (const unsigned long long t) { return BigInt{std::to_string(t)}; }
+    BigInt operator""_BigInt (const unsigned long long t) { return BigInt{std::to_string(t)}; }
 
-BigInt factorial(const uint64_t n) {
-    static std::unordered_map<long long int, BigInt> history;
+    BigInt factorial(const uint64_t n) {
+        static std::unordered_map<long long int, BigInt> history;
 
-    if (history.contains(n)) {
-        return history[n];
-    }
+        if (history.contains(n)) {
+            return history[n];
+        }
 
-    if (n < 2) {
-        const auto value = 1_BigInt;
+        if (n < 2) {
+            const auto value = 1_BigInt;
+            history[n] = value;
+            return value;
+        }
+
+        const auto value = n * factorial(n - 1);
         history[n] = value;
         return value;
     }
 
-    const auto value = n * factorial(n - 1);
-    history[n] = value;
-    return value;
-}
+    BigInt fibonacci(const uint64_t n) {
+        static std::unordered_map<uint64_t, BigInt> history;
 
-BigInt fibonacci(const uint64_t n) {
-    static std::unordered_map<uint64_t, BigInt> history;
+        if (history.contains(n)) {
+            return history[n];
+        }
 
-    if (history.contains(n)) {
-        return history[n];
-    }
+        if (n < 3) {
+            const auto value = 1_BigInt;
+            history[n] = value;
+            return value;
+        }
 
-    if (n < 3) {
-        const auto value = 1_BigInt;
+        const auto n1 = fibonacci(n-1);
+        const auto n2 = fibonacci(n-2);
+
+        const auto value = n1 + n2;
         history[n] = value;
         return value;
     }
 
-    const auto n1 = fibonacci(n-1);
-    const auto n2 = fibonacci(n-2);
-
-    const auto value = n1 + n2;
-    history[n] = value;
-    return value;
-}
-
-bool BigInt::is_greater_than_int64_max() const {
-    return *this > BigInt{INT64_MAX};
-}
+    bool BigInt::is_greater_than_int64_max() const {
+        return *this > BigInt{INT64_MAX};
+    }
 
 } // namespace ocb

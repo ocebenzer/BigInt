@@ -7,9 +7,9 @@
 
 namespace ocb {
 
-BigInt operator<< (const BigInt& lhs, const BigInt& rhs)  { return BigInt{lhs} *= find_pow_of_2(rhs); }
-BigInt operator>> (const BigInt& lhs, const BigInt& rhs)  { return BigInt{lhs} /= find_pow_of_2(rhs); }
-BigInt operator<< (const BigInt& lhs, const long long int rhs)  { return lhs << BigInt{rhs}; }
-BigInt operator>> (const BigInt& lhs, const long long int rhs)  { return lhs >> BigInt{rhs}; }
+    BigInt operator<< (const BigInt& lhs, const BigInt& rhs)  { return BigInt{lhs} *= find_pow_of_2(rhs); }
+    BigInt operator>> (const BigInt& lhs, const BigInt& rhs)  { return BigInt{lhs} /= find_pow_of_2(rhs); }
+    BigInt operator<< (const BigInt& lhs, const long long int rhs)  { return lhs << BigInt{rhs}; }
+    BigInt operator>> (const BigInt& lhs, const long long int rhs)  { return lhs >> BigInt{rhs}; }
 
 } // namespace ocb

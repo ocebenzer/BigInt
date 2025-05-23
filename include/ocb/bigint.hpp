@@ -20,6 +20,7 @@ namespace ocb {
         void set_value(std::string &&);
         [[nodiscard]] std::string to_string() const;
         void set(std::string &&);
+        void set(long long int);
 
         // Unary operators
 
