@@ -5,7 +5,7 @@
 namespace ocb {
     BigInt operator""_BigInt (const unsigned long long t) { return BigInt{std::to_string(t)}; }
 
-    BigInt factorial(const uint64_t n) {
+    BigInt factorial(const unsigned long long n) {
         static std::unordered_map<long long int, BigInt> history;
 
         if (history.contains(n)) {
@@ -23,8 +23,8 @@ namespace ocb {
         return value;
     }
 
-    BigInt fibonacci(const uint64_t n) {
-        static std::unordered_map<uint64_t, BigInt> history;
+    BigInt fibonacci(const unsigned long long n) {
+        static std::unordered_map<unsigned long long, BigInt> history;
 
         if (history.contains(n)) {
             return history[n];
