@@ -4,7 +4,7 @@
 
 namespace ocb {
 
-BigInt BigInt::factorial(const int64_t n) {
+BigInt factorial(const uint64_t n) {
     static std::unordered_map<int64_t, BigInt> history;
 
     if (history.contains(n)) {
@@ -12,7 +12,7 @@ BigInt BigInt::factorial(const int64_t n) {
     }
 
     if (n < 2) {
-        constexpr auto value = 1;
+        const auto value = 1_BigInt;
         history[n] = value;
         return value;
     }
@@ -22,7 +22,7 @@ BigInt BigInt::factorial(const int64_t n) {
     return value;
 }
 
-BigInt BigInt::fibonacci(const uint64_t n) {
+BigInt fibonacci(const uint64_t n) {
     static std::unordered_map<uint64_t, BigInt> history;
 
     if (history.contains(n)) {
@@ -30,7 +30,7 @@ BigInt BigInt::fibonacci(const uint64_t n) {
     }
 
     if (n < 3) {
-        constexpr auto value = 1;
+        const auto value = 1_BigInt;
         history[n] = value;
         return value;
     }

@@ -11,14 +11,9 @@ namespace ocb {
         std::string value;
 
     public:
-        static BigInt factorial(int64_t);
-        static BigInt fibonacci(uint64_t);
+        explicit BigInt(const std::string & = "0");
 
-        // Constructors
-
-        BigInt(const std::string & = "0");
-
-        BigInt(int64_t number);
+        BigInt(int64_t);
 
         [[nodiscard]] bool get_negative() const;
 
@@ -157,8 +152,8 @@ namespace ocb {
 
         friend BigInt operator<<(const BigInt &, int);
 
-        friend BigInt operator>>(const BigInt &, int);
-    };
+    BigInt factorial(uint64_t);
+    BigInt fibonacci(uint64_t);
 } // namespace ocb
 
 template<>
